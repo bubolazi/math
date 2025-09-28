@@ -20,7 +20,17 @@
         </header>
 
         <main>
-            <div id="level-select" class="screen active">
+            <div id="operation-select" class="screen active">
+                <h2>ИЗБЕРЕТЕ ОПЕРАЦИЯ:</h2>
+                <ul class="operation-list">
+                    <!-- Operations will be dynamically populated by the View -->
+                </ul>
+                <div class="instructions">
+                    КЛИКНЕТЕ НА ОПЕРАЦИЯ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК
+                </div>
+            </div>
+
+            <div id="level-select" class="screen">
                 <h2>ИЗБЕРЕТЕ НИВО НА ТРУДНОСТ:</h2>
                 <ul class="level-list">
                     <!-- Levels will be dynamically populated by the View -->
@@ -57,8 +67,11 @@
         <div id="terminal-message" class="terminal-message"></div>
     </div>
 
-    <!-- MVC Architecture with Localization -->
+    <!-- MVC Architecture with Localization and Operations -->
     <script src="js/models/LocalizationModel.js"></script>
+    <script src="js/models/extensions/AdditionLevels.js"></script>
+    <script src="js/models/extensions/SubtractionLevels.js"></script>
+    <script src="js/models/OperationManager.js"></script>
     <script src="js/models/MathModel.js"></script>
     <script src="js/views/MathView.js"></script>
     <script src="js/controllers/MathController.js"></script>

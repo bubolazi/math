@@ -35,21 +35,21 @@ header h1 {
     color: var(--terminal-green);
 }
 
-/* Level selection colors */
-#level-select h2 {
+/* Level and Operation selection colors */
+#level-select h2, #operation-select h2 {
     color: var(--terminal-green);
 }
 
-.level-item:hover {
+.level-item:hover, .operation-item:hover {
     background-color: var(--dark-green);
 }
 
-.level-item:before {
+.level-item:before, .operation-item:before {
     content: "[ ] ";
     color: var(--terminal-green);
 }
 
-.level-item:hover:before {
+.level-item:hover:before, .operation-item:hover:before {
     content: "[X] ";
     color: var(--terminal-green);
 }

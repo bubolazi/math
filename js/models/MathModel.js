@@ -1,66 +1,22 @@
-// Model: Data and business logic for math practice
+// Model: Data and business logic for math practice - Generic operation support
 class MathModel {
-    constructor(localization) {
+    constructor(localization, operationExtension) {
         this.localization = localization;
+        this.operationExtension = operationExtension;
         this.currentLevel = 1;
-        this.currentOperation = 'addition';
+        this.currentOperation = operationExtension.getOperationKey().toLowerCase();
         this.score = 0;
         this.problemsSolved = 0;
         this.currentProblem = null;
         
-        // Level configurations - easily extendable (descriptions will be localized)
-        this.levels = {
-            1: { min: 1, max: 9, descriptionKey: 'SINGLE_DIGITS' },
-            2: { min: 10, max: 19, descriptionKey: 'DOUBLE_DIGITS' },
-            3: { min: 1, max: 20, descriptionKey: 'UP_TO_20' },
-            4: { min: 1, max: 50, descriptionKey: 'UP_TO_50' },
-            5: { min: 1, max: 100, descriptionKey: 'UP_TO_100' }
-        };
+        // Get levels from the operation extension
+        this.levels = operationExtension.getLevels();
     }
     
     // Generate a math problem based on current level and operation
     generateProblem() {
-        const levelConfig = this.levels[this.currentLevel];
-        let num1, num2;
-        
-        if (this.currentOperation === 'addition') {
-            // Generate numbers based on level
-            if (this.currentLevel === 1) {
-                // Single digits only
-                num1 = this.randomInt(1, 9);
-                num2 = this.randomInt(1, 9);
-            } else if (this.currentLevel === 2) {
-                // One number is double digit (10-19), other is single digit
-                num1 = this.randomInt(10, 19);
-                num2 = this.randomInt(1, 9);
-            } else {
-                // General case: ensure result doesn't exceed level max
-                num1 = this.randomInt(levelConfig.min, Math.min(levelConfig.max, 50));
-                num2 = this.randomInt(levelConfig.min, Math.min(levelConfig.max - num1, 50));
-                
-                // Ensure result doesn't exceed level maximum
-                if (num1 + num2 > levelConfig.max) {
-                    num2 = levelConfig.max - num1;
-                    if (num2 < 1) {
-                        num1 = this.randomInt(1, levelConfig.max - 1);
-                        num2 = this.randomInt(1, levelConfig.max - num1);
-                    }
-                }
-            }
-            
-            this.currentProblem = {
-                num1: num1,
-                num2: num2,
-                operation: '+',
-                answer: num1 + num2
-            };
-        }
-        
-        // Future operations can be added here
-        // if (this.currentOperation === 'subtraction') { ... }
-        // if (this.currentOperation === 'multiplication') { ... }
-        // if (this.currentOperation === 'division') { ... }
-        
+        // Delegate problem generation to the operation extension
+        this.currentProblem = this.operationExtension.generateProblem(this.currentLevel);
         return this.currentProblem;
     }
     
@@ -89,7 +45,8 @@ class MathModel {
     
     // Get a random reward message
     getRandomRewardMessage() {
-        const messages = this.localization.tArray('REWARD_MESSAGES');
+        const rewardMessageKeys = this.operationExtension.getRewardMessages();
+        const messages = this.localization.tArray(rewardMessageKeys[0]);
         return messages[Math.floor(Math.random() * messages.length)];
     }
     
@@ -111,6 +68,7 @@ class MathModel {
         return {
             level: this.currentLevel,
             operation: this.currentOperation,
+            operationKey: this.operationExtension.getOperationKey(),
             score: this.score,
             problemsSolved: this.problemsSolved,
             currentProblem: this.currentProblem,
@@ -118,8 +76,5 @@ class MathModel {
         };
     }
     
-    // Utility function for random integer generation
-    randomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1)) + min;
-    }
+    // Remove the randomInt method as it's now handled by extensions
 }

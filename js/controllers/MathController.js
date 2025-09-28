@@ -1,45 +1,80 @@
 // Controller: Coordinates between Model and View
 class MathController {
-    constructor(model, view) {
-        this.model = model;
-        this.view = view;
+    constructor(localization, operationManager) {
+        this.localization = localization;
+        this.operationManager = operationManager;
+        this.view = new MathView(localization);
+        this.model = null; // Will be initialized after operation selection
         
-        this.initializeApp();
+        this.initializeOperationSelection();
     }
     
-    initializeApp() {
-        // Initialize the view with model data
+    initializeOperationSelection() {
+        // Show operation selection screen
+        this.view.showScreen('operation-select');
+        
+        // Render available operations
+        this.view.renderOperationList(this.operationManager.getAvailableOperations(), this.localization);
+        
+        // Bind operation selection event
+        this.view.bindOperationSelection((operation) => {
+            this.selectOperation(operation);
+        });
+    }
+    
+    selectOperation(operationName) {
+        // Get the operation extension
+        const operationExtension = this.operationManager.getOperationExtension(operationName);
+        if (!operationExtension) {
+            console.error(`Operation ${operationName} not found`);
+            return;
+        }
+        
+        // Initialize the model with the selected operation
+        this.model = new MathModel(this.localization, operationExtension);
+        
+        // Initialize level selection for this operation
+        this.initializeLevelSelection();
+    }
+    
+    initializeLevelSelection() {
+        // Render level list for the selected operation
         this.view.renderLevelList(this.model.getLocalizedLevels());
         
-        // Bind event handlers
-        this.bindEvents();
-        
-        // Show initial screen
-        this.view.showScreen('level-select');
-        this.view.updateGameStatus(this.model.getGameState());
-    }
-    
-    bindEvents() {
-        // Bind level selection
+        // Bind level selection event
         this.view.bindLevelSelection((level, operation) => {
             this.startLevel(level, operation);
         });
         
+        // Show level selection screen
+        this.view.showScreen('level-select');
+        this.view.updateGameStatus(this.model.getGameState());
+    }
+    
+    // Start a new level
+    startLevel(level, operation) {
+        if (!this.model) {
+            console.error('Model not initialized. Select an operation first.');
+            return;
+        }
+        
+        this.model.setLevel(level, operation);
+        this.model.resetStats();
+        this.view.showScreen('game-screen');
+        this.generateNewProblem();
+        this.view.updateGameStatus(this.model.getGameState());
+        
+        // Bind input events when starting the game
+        this.bindGameEvents();
+    }
+    
+    bindGameEvents() {
         // Bind input events
         this.view.bindInputEvents(
             () => this.checkAnswer(),           // Submit handler
             () => this.view.hideCursor(),       // Focus handler
             () => this.view.showCursor()        // Blur handler
         );
-    }
-    
-    // Start a new level
-    startLevel(level, operation) {
-        this.model.setLevel(level, operation);
-        this.model.resetStats();
-        this.view.showScreen('game-screen');
-        this.generateNewProblem();
-        this.view.updateGameStatus(this.model.getGameState());
     }
     
     // Generate and display a new problem

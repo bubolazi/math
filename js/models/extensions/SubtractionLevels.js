@@ -2,11 +2,11 @@
 class SubtractionLevels {
     static getLevels() {
         return {
-            1: { min: 1, max: 9, description: 'SUBTRACTION: SINGLE DIGITS (1-9)' },
-            2: { min: 10, max: 19, description: 'SUBTRACTION: DOUBLE DIGITS (10-19)' },
-            3: { min: 1, max: 20, description: 'SUBTRACTION: UP TO 20' },
-            4: { min: 1, max: 50, description: 'SUBTRACTION: UP TO 50' },
-            5: { min: 1, max: 100, description: 'SUBTRACTION: UP TO 100' }
+            1: { min: 1, max: 9, descriptionKey: 'SINGLE_DIGITS' },
+            2: { min: 10, max: 19, descriptionKey: 'DOUBLE_DIGITS' },
+            3: { min: 1, max: 20, descriptionKey: 'UP_TO_20' },
+            4: { min: 1, max: 50, descriptionKey: 'UP_TO_50' },
+            5: { min: 1, max: 100, descriptionKey: 'UP_TO_100' }
         };
     }
     
@@ -39,30 +39,15 @@ class SubtractionLevels {
     
     static getRewardMessages() {
         return [
-            "EXCELLENT SUBTRACTION!",
-            "PERFECT CALCULATION!",
-            "OUTSTANDING SUBTRACTION WORK!",
-            "BRILLIANT MINUS SKILLS!",
-            "SUPERB SUBTRACTION!",
-            "FLAWLESS SUBTRACTION!",
-            "MAGNIFICENT SUBTRACTION!",
-            "IMPRESSIVE MINUS WORK!",
-            "EXCEPTIONAL SUBTRACTION!",
-            "AMAZING SUBTRACTION SKILLS!"
+            'SUBTRACTION_REWARD_MESSAGES' // Will be localized by the localization system
         ];
+    }
+    
+    static getOperationKey() {
+        return 'SUBTRACTION';
     }
     
     static randomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 }
-
-// Example of how to extend the main model
-// MathModel.prototype.addOperation = function(operation, levels, problemGenerator, messages) {
-//     this.operations = this.operations || {};
-//     this.operations[operation] = {
-//         levels: levels,
-//         generateProblem: problemGenerator,
-//         rewardMessages: messages
-//     };
-// };

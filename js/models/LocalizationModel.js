@@ -12,7 +12,16 @@ class LocalizationModel {
                 // Page title and header
                 'MATH_TERMINAL': 'МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0',
                 'LEVEL': 'НИВО',
+                
+                // Operations
                 'ADDITION': 'СЪБИРАНЕ',
+                'SUBTRACTION': 'ИЗВАЖДАНЕ',
+                'MULTIPLICATION': 'УМНОЖЕНИЕ',
+                'DIVISION': 'ДЕЛЕНИЕ',
+                
+                // Operation selection
+                'SELECT_OPERATION': 'ИЗБЕРЕТЕ ОПЕРАЦИЯ:',
+                'OPERATION_INSTRUCTIONS': 'КЛИКНЕТЕ НА ОПЕРАЦИЯ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК',
                 
                 // Level selection screen
                 'SELECT_DIFFICULTY_LEVEL': 'ИЗБЕРЕТЕ НИВО НА ТРУДНОСТ:',
@@ -42,6 +51,20 @@ class LocalizationModel {
                     'ВЕЛИКОЛЕПНА РАБОТА!',
                     'БЕЗУПРЕЧНО ИЗПЪЛНЕНИЕ!',
                     'ВПЕЧАТЛЯВАЩА ТОЧНОСТ!'
+                ],
+                
+                // Subtraction-specific reward messages
+                'SUBTRACTION_REWARD_MESSAGES': [
+                    'ОТЛИЧНО ИЗВАЖДАНЕ!',
+                    'ПЕРФЕКТНО ПРЕСМЯТАНЕ!',
+                    'НЕВЕРОЯТНА РАБОТА С ИЗВАЖДАНЕ!',
+                    'БЛЕСТЯЩИ УМЕНИЯ ЗА МИНУС!',
+                    'ПРЕВЪЗХОДНО ИЗВАЖДАНЕ!',
+                    'БЕЗУПРЕЧНО ИЗВАЖДАНЕ!',
+                    'ВЕЛИКОЛЕПНО ИЗВАЖДАНЕ!',
+                    'ВПЕЧАТЛЯВАЩА РАБОТА С МИНУС!',
+                    'ИЗКЛЮЧИТЕЛНО ИЗВАЖДАНЕ!',
+                    'НЕВЕРОЯТНИ УМЕНИЯ ЗА ИЗВАЖДАНЕ!'
                 ],
                 
                 // Error messages
