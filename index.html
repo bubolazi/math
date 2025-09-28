@@ -4,7 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MATH TERMINAL v1.0</title>
-    <link rel="stylesheet" href="styles.css">
+    <!-- Base styles (theme-independent) -->
+    <link rel="stylesheet" href="css/base.css">
+    <!-- Theme styles (easily swappable) -->
+    <link rel="stylesheet" href="css/themes/terminal-green.css">
 </head>
 <body>
     <div class="container">
@@ -20,11 +23,7 @@
             <div id="level-select" class="screen active">
                 <h2>SELECT DIFFICULTY LEVEL:</h2>
                 <ul class="level-list">
-                    <li class="level-item" data-level="1" data-operation="addition">1. SINGLE DIGITS (1-9)</li>
-                    <li class="level-item" data-level="2" data-operation="addition">2. DOUBLE DIGITS (10-19)</li>
-                    <li class="level-item" data-level="3" data-operation="addition">3. UP TO 20</li>
-                    <li class="level-item" data-level="4" data-operation="addition">4. UP TO 50</li>
-                    <li class="level-item" data-level="5" data-operation="addition">5. UP TO 100</li>
+                    <!-- Levels will be dynamically populated by the View -->
                 </ul>
                 <div class="instructions">
                     CLICK ON A LEVEL TO START • REFRESH PAGE TO RETURN HERE
@@ -58,6 +57,10 @@
         <div id="terminal-message" class="terminal-message"></div>
     </div>
 
-    <script src="script.js"></script>
+    <!-- MVC Architecture -->
+    <script src="js/models/MathModel.js"></script>
+    <script src="js/views/MathView.js"></script>
+    <script src="js/controllers/MathController.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>

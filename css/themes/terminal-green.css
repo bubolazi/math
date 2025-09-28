@@ -1,0 +1,111 @@
+/* Terminal Green Theme - Colors and theme-specific styles only */
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+    --terminal-green: #00ff41;
+    --dark-green: #003300;
+    --bg-black: #000000;
+    --cursor-green: #00ff41;
+    --dim-green: #009900;
+}
+
+/* Theme-specific color application */
+body {
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    background: var(--bg-black);
+    color: var(--terminal-green);
+}
+
+.container {
+    background: var(--bg-black);
+}
+
+/* Terminal header colors */
+header {
+    background: var(--bg-black);
+    color: var(--terminal-green);
+    border-bottom: 1px solid var(--terminal-green);
+}
+
+header h1 {
+    color: var(--terminal-green);
+}
+
+.level-info {
+    color: var(--terminal-green);
+}
+
+/* Level selection colors */
+#level-select h2 {
+    color: var(--terminal-green);
+}
+
+.level-item:hover {
+    background-color: var(--dark-green);
+}
+
+.level-item:before {
+    content: "[ ] ";
+    color: var(--terminal-green);
+}
+
+.level-item:hover:before {
+    content: "[X] ";
+    color: var(--terminal-green);
+}
+
+/* Game screen colors */
+.problem-display {
+    color: var(--terminal-green);
+    text-shadow: 0 0 10px var(--terminal-green);
+}
+
+.input-line {
+    color: var(--terminal-green);
+}
+
+#terminal-input {
+    color: var(--terminal-green);
+    font-family: 'Courier Prime', monospace;
+}
+
+/* Blinking cursor */
+.cursor {
+    display: inline-block;
+    background-color: var(--terminal-green);
+    width: 2px;
+    height: 2rem;
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+/* Status line colors */
+.status-line {
+    color: var(--dim-green);
+    border-top: 1px solid var(--dim-green);
+}
+
+/* Message colors */
+.terminal-message {
+    background: var(--bg-black);
+    color: var(--terminal-green);
+    border: 2px solid var(--terminal-green);
+    text-shadow: 0 0 10px var(--terminal-green);
+}
+
+/* Instructions colors */
+.instructions {
+    color: var(--dim-green);
+}
+
+/* Responsive cursor adjustment */
+@media (max-width: 600px) {
+    .cursor {
+        height: 1.5rem;
+    }
+}
