@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MATH TERMINAL v1.0</title>
+    <title>МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0</title>
     <!-- Base styles (theme-independent) -->
     <link rel="stylesheet" href="css/base.css">
     <!-- Theme styles (easily swappable) -->
@@ -12,21 +12,21 @@
 <body>
     <div class="container">
         <header>
-            <h1>MATH TERMINAL v1.0</h1>
+            <h1>МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0</h1>
             <div class="level-info">
-                <span id="current-level">LEVEL 1</span>
-                <span id="current-operation">ADDITION</span>
+                <span id="current-level">НИВО 1</span>
+                <span id="current-operation">СЪБИРАНЕ</span>
             </div>
         </header>
 
         <main>
             <div id="level-select" class="screen active">
-                <h2>SELECT DIFFICULTY LEVEL:</h2>
+                <h2>ИЗБЕРЕТЕ НИВО НА ТРУДНОСТ:</h2>
                 <ul class="level-list">
                     <!-- Levels will be dynamically populated by the View -->
                 </ul>
                 <div class="instructions">
-                    CLICK ON A LEVEL TO START • REFRESH PAGE TO RETURN HERE
+                    КЛИКНЕТЕ НА НИВО ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК
                 </div>
             </div>
 
@@ -44,12 +44,12 @@
                 </div>
                 
                 <div class="status-line">
-                    <span id="score-display">SCORE: 0</span>
-                    <span id="problems-display">PROBLEMS: 0</span>
+                    <span id="score-display">ТОЧКИ: 0</span>
+                    <span id="problems-display">ЗАДАЧИ: 0</span>
                 </div>
                 
                 <div class="instructions">
-                    PRESS ENTER TO SUBMIT ANSWER • REFRESH PAGE TO RETURN TO LEVELS
+                    НАТИСНЕТЕ ENTER ЗА ИЗПРАЩАНЕ НА ОТГОВОР • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА
                 </div>
             </div>
         </main>
@@ -57,7 +57,8 @@
         <div id="terminal-message" class="terminal-message"></div>
     </div>
 
-    <!-- MVC Architecture -->
+    <!-- MVC Architecture with Localization -->
+    <script src="js/models/LocalizationModel.js"></script>
     <script src="js/models/MathModel.js"></script>
     <script src="js/views/MathView.js"></script>
     <script src="js/controllers/MathController.js"></script>

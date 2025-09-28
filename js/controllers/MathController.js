@@ -9,7 +9,7 @@ class MathController {
     
     initializeApp() {
         // Initialize the view with model data
-        this.view.renderLevelList(this.model.levels);
+        this.view.renderLevelList(this.model.getLocalizedLevels());
         
         // Bind event handlers
         this.bindEvents();
@@ -54,7 +54,7 @@ class MathController {
         const userInput = this.view.getUserInput();
         
         if (!userInput || isNaN(parseInt(userInput))) {
-            this.view.showMessage('ERROR: INVALID INPUT', 2000);
+            this.view.showMessage(this.model.localization.t('ERROR_INVALID_INPUT'), 2000);
             return;
         }
         
@@ -71,7 +71,7 @@ class MathController {
         } else {
             // Incorrect answer
             const correctAnswer = this.model.currentProblem.answer;
-            this.view.showMessage(`INCORRECT. ANSWER: ${correctAnswer}`, 2500);
+            this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${correctAnswer}`, 2500);
             
             // Generate new problem after showing correct answer
             setTimeout(() => {

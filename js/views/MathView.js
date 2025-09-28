@@ -1,6 +1,7 @@
 // View: UI rendering and DOM manipulation
 class MathView {
-    constructor() {
+    constructor(localization) {
+        this.localization = localization;
         this.elements = {
             levelSelect: document.getElementById('level-select'),
             gameScreen: document.getElementById('game-screen'),
@@ -13,6 +14,33 @@ class MathView {
             terminalMessage: document.getElementById('terminal-message'),
             levelList: document.querySelector('.level-list')
         };
+        
+        // Initialize static UI text
+        this.initializeStaticText();
+    }
+    
+    // Initialize static text elements with Bulgarian translations
+    initializeStaticText() {
+        // Update page title
+        document.title = this.localization.t('MATH_TERMINAL');
+        
+        // Update header
+        const header = document.querySelector('header h1');
+        if (header) header.textContent = this.localization.t('MATH_TERMINAL');
+        
+        // Update level selection screen
+        const levelSelectTitle = document.querySelector('#level-select h2');
+        if (levelSelectTitle) levelSelectTitle.textContent = this.localization.t('SELECT_DIFFICULTY_LEVEL');
+        
+        // Update instructions
+        const levelInstructions = document.querySelector('#level-select .instructions');
+        if (levelInstructions) levelInstructions.textContent = this.localization.t('LEVEL_INSTRUCTIONS');
+        
+        const gameInstructions = document.querySelector('#game-screen .instructions');
+        if (gameInstructions) gameInstructions.textContent = this.localization.t('GAME_INSTRUCTIONS');
+        
+        // Update HTML lang attribute
+        document.documentElement.lang = this.localization.getCurrentLanguage();
     }
     
     // Show a specific screen
@@ -39,10 +67,10 @@ class MathView {
     
     // Update the game status display
     updateGameStatus(gameState) {
-        this.elements.currentLevel.textContent = `LEVEL ${gameState.level}`;
-        this.elements.currentOperation.textContent = gameState.operation.toUpperCase();
-        this.elements.scoreDisplay.textContent = `SCORE: ${gameState.score}`;
-        this.elements.problemsDisplay.textContent = `PROBLEMS: ${gameState.problemsSolved}`;
+        this.elements.currentLevel.textContent = `${this.localization.t('LEVEL')} ${gameState.level}`;
+        this.elements.currentOperation.textContent = this.localization.t('ADDITION');
+        this.elements.scoreDisplay.textContent = `${this.localization.t('SCORE')}: ${gameState.score}`;
+        this.elements.problemsDisplay.textContent = `${this.localization.t('PROBLEMS')}: ${gameState.problemsSolved}`;
     }
     
     // Show feedback message

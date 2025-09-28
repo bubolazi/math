@@ -1,34 +1,21 @@
 // Model: Data and business logic for math practice
 class MathModel {
-    constructor() {
+    constructor(localization) {
+        this.localization = localization;
         this.currentLevel = 1;
         this.currentOperation = 'addition';
         this.score = 0;
         this.problemsSolved = 0;
         this.currentProblem = null;
         
-        // Level configurations - easily extendable
+        // Level configurations - easily extendable (descriptions will be localized)
         this.levels = {
-            1: { min: 1, max: 9, description: 'SINGLE DIGITS (1-9)' },
-            2: { min: 10, max: 19, description: 'DOUBLE DIGITS (10-19)' },
-            3: { min: 1, max: 20, description: 'UP TO 20' },
-            4: { min: 1, max: 50, description: 'UP TO 50' },
-            5: { min: 1, max: 100, description: 'UP TO 100' }
+            1: { min: 1, max: 9, descriptionKey: 'SINGLE_DIGITS' },
+            2: { min: 10, max: 19, descriptionKey: 'DOUBLE_DIGITS' },
+            3: { min: 1, max: 20, descriptionKey: 'UP_TO_20' },
+            4: { min: 1, max: 50, descriptionKey: 'UP_TO_50' },
+            5: { min: 1, max: 100, descriptionKey: 'UP_TO_100' }
         };
-        
-        // Reward messages - theme-independent
-        this.rewardMessages = [
-            "CORRECT! WELL DONE!",
-            "EXCELLENT CALCULATION!",
-            "PERFECT ANSWER!",
-            "OUTSTANDING WORK!",
-            "BRILLIANT RESULT!",
-            "SUPERB COMPUTATION!",
-            "EXCEPTIONAL SKILL!",
-            "MAGNIFICENT WORK!",
-            "FLAWLESS EXECUTION!",
-            "IMPRESSIVE ACCURACY!"
-        ];
     }
     
     // Generate a math problem based on current level and operation
@@ -102,7 +89,21 @@ class MathModel {
     
     // Get a random reward message
     getRandomRewardMessage() {
-        return this.rewardMessages[Math.floor(Math.random() * this.rewardMessages.length)];
+        const messages = this.localization.tArray('REWARD_MESSAGES');
+        return messages[Math.floor(Math.random() * messages.length)];
+    }
+    
+    // Get localized level descriptions
+    getLocalizedLevels() {
+        const localizedLevels = {};
+        Object.keys(this.levels).forEach(levelNum => {
+            const level = this.levels[levelNum];
+            localizedLevels[levelNum] = {
+                ...level,
+                description: this.localization.t(level.descriptionKey)
+            };
+        });
+        return localizedLevels;
     }
     
     // Get current game state
@@ -113,7 +114,7 @@ class MathModel {
             score: this.score,
             problemsSolved: this.problemsSolved,
             currentProblem: this.currentProblem,
-            levels: this.levels
+            levels: this.getLocalizedLevels()
         };
     }
     
