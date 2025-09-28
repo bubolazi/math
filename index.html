@@ -3,76 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Math Practice for Kids</title>
+    <title>MATH TERMINAL v1.0</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>Math Practice</h1>
+            <h1>MATH TERMINAL v1.0</h1>
             <div class="level-info">
-                <span id="current-level">Level 1</span>
-                <span id="current-operation">Addition</span>
+                <span id="current-level">LEVEL 1</span>
+                <span id="current-operation">ADDITION</span>
             </div>
         </header>
 
         <main>
             <div id="level-select" class="screen active">
-                <h2>Choose Your Level</h2>
-                <div class="level-buttons">
-                    <button class="level-btn" data-level="1" data-operation="addition">
-                        <span class="level-title">Level 1</span>
-                        <span class="level-desc">Single digits (1-9)</span>
-                    </button>
-                    <button class="level-btn" data-level="2" data-operation="addition">
-                        <span class="level-title">Level 2</span>
-                        <span class="level-desc">Double digits (10-19)</span>
-                    </button>
-                    <button class="level-btn" data-level="3" data-operation="addition">
-                        <span class="level-title">Level 3</span>
-                        <span class="level-desc">Up to 20</span>
-                    </button>
-                    <button class="level-btn" data-level="4" data-operation="addition">
-                        <span class="level-title">Level 4</span>
-                        <span class="level-desc">Up to 50</span>
-                    </button>
-                    <button class="level-btn" data-level="5" data-operation="addition">
-                        <span class="level-title">Level 5</span>
-                        <span class="level-desc">Up to 100</span>
-                    </button>
+                <h2>SELECT DIFFICULTY LEVEL:</h2>
+                <ul class="level-list">
+                    <li class="level-item" data-level="1" data-operation="addition">1. SINGLE DIGITS (1-9)</li>
+                    <li class="level-item" data-level="2" data-operation="addition">2. DOUBLE DIGITS (10-19)</li>
+                    <li class="level-item" data-level="3" data-operation="addition">3. UP TO 20</li>
+                    <li class="level-item" data-level="4" data-operation="addition">4. UP TO 50</li>
+                    <li class="level-item" data-level="5" data-operation="addition">5. UP TO 100</li>
+                </ul>
+                <div class="instructions">
+                    CLICK ON A LEVEL TO START • REFRESH PAGE TO RETURN HERE
                 </div>
-                <button id="back-to-menu" class="menu-btn" style="display: none;">Back to Menu</button>
             </div>
 
             <div id="game-screen" class="screen">
-                <div class="problem-container">
-                    <div class="problem">
-                        <span id="num1">5</span>
-                        <span id="operator">+</span>
-                        <span id="num2">3</span>
-                        <span>=</span>
-                        <span id="answer-display">?</span>
+                <div class="terminal-display">
+                    <div class="problem-display" id="problem-display">
+                        5 + 3 = ?
+                    </div>
+                    
+                    <div class="input-line">
+                        <span class="input-prompt">></span>
+                        <input type="number" id="terminal-input" autocomplete="off">
+                        <span class="cursor"></span>
                     </div>
                 </div>
-
-                <div class="answer-input">
-                    <input type="number" id="answer-input" placeholder="Your answer" min="0" max="200">
-                    <button id="submit-answer">Check</button>
+                
+                <div class="status-line">
+                    <span id="score-display">SCORE: 0</span>
+                    <span id="problems-display">PROBLEMS: 0</span>
                 </div>
-
-                <div class="game-controls">
-                    <button id="next-problem">Next Problem</button>
-                    <button id="back-to-levels">Back to Levels</button>
-                </div>
-
-                <div class="progress">
-                    <span id="score">Score: 0</span>
-                    <span id="problems-solved">Problems: 0</span>
+                
+                <div class="instructions">
+                    PRESS ENTER TO SUBMIT ANSWER • REFRESH PAGE TO RETURN TO LEVELS
                 </div>
             </div>
         </main>
 
-        <div id="reward-message" class="reward-message"></div>
+        <div id="terminal-message" class="terminal-message"></div>
     </div>
 
     <script src="script.js"></script>

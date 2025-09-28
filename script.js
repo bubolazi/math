@@ -1,5 +1,5 @@
-// Math Practice App for Preschool Children
-class MathPracticeApp {
+// Terminal Math Practice App for Preschool Children
+class TerminalMathApp {
     constructor() {
         this.currentLevel = 1;
         this.currentOperation = 'addition';
@@ -9,25 +9,25 @@ class MathPracticeApp {
         
         // Level configurations
         this.levels = {
-            1: { min: 1, max: 9, description: 'Single digits (1-9)' },
-            2: { min: 10, max: 19, description: 'Double digits (10-19)' },
-            3: { min: 1, max: 20, description: 'Up to 20' },
-            4: { min: 1, max: 50, description: 'Up to 50' },
-            5: { min: 1, max: 100, description: 'Up to 100' }
+            1: { min: 1, max: 9, description: 'SINGLE DIGITS (1-9)' },
+            2: { min: 10, max: 19, description: 'DOUBLE DIGITS (10-19)' },
+            3: { min: 1, max: 20, description: 'UP TO 20' },
+            4: { min: 1, max: 50, description: 'UP TO 50' },
+            5: { min: 1, max: 100, description: 'UP TO 100' }
         };
         
-        // Reward messages
+        // Terminal-style reward messages
         this.rewardMessages = [
-            "Great job! 🌟",
-            "Excellent! 🎉",
-            "Well done! 👏",
-            "Fantastic! ⭐",
-            "Amazing! 🌈",
-            "Perfect! 🎯",
-            "Outstanding! 🏆",
-            "Wonderful! 💚",
-            "Brilliant! ✨",
-            "Super! 🚀"
+            "CORRECT! WELL DONE!",
+            "EXCELLENT CALCULATION!",
+            "PERFECT ANSWER!",
+            "OUTSTANDING WORK!",
+            "BRILLIANT RESULT!",
+            "SUPERB COMPUTATION!",
+            "EXCEPTIONAL SKILL!",
+            "MAGNIFICENT WORK!",
+            "FLAWLESS EXECUTION!",
+            "IMPRESSIVE ACCURACY!"
         ];
         
         this.initializeApp();
@@ -40,42 +40,29 @@ class MathPracticeApp {
     }
     
     bindEvents() {
-        // Level selection buttons
-        document.querySelectorAll('.level-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+        // Level selection clicks
+        document.querySelectorAll('.level-item').forEach(item => {
+            item.addEventListener('click', (e) => {
                 const level = parseInt(e.currentTarget.dataset.level);
                 const operation = e.currentTarget.dataset.operation;
                 this.startLevel(level, operation);
             });
         });
         
-        // Submit answer
-        document.getElementById('submit-answer').addEventListener('click', () => {
-            this.checkAnswer();
-        });
-        
-        // Enter key to submit answer
-        document.getElementById('answer-input').addEventListener('keypress', (e) => {
+        // Enter key to submit answer in game screen
+        document.getElementById('terminal-input').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 this.checkAnswer();
             }
         });
         
-        // Next problem button
-        document.getElementById('next-problem').addEventListener('click', () => {
-            this.generateNewProblem();
+        // Auto-focus on input when game screen is shown
+        document.getElementById('terminal-input').addEventListener('focus', () => {
+            this.hideCursor();
         });
         
-        // Back to levels button
-        document.getElementById('back-to-levels').addEventListener('click', () => {
-            this.showScreen('level-select');
-            this.resetGameStats();
-        });
-        
-        // Back to menu button (for future use)
-        document.getElementById('back-to-menu').addEventListener('click', () => {
-            this.showScreen('level-select');
-            this.resetGameStats();
+        document.getElementById('terminal-input').addEventListener('blur', () => {
+            this.showCursor();
         });
     }
     
@@ -86,6 +73,7 @@ class MathPracticeApp {
         this.showScreen('game-screen');
         this.generateNewProblem();
         this.updateDisplay();
+        this.focusInput();
     }
     
     resetGameStats() {
@@ -132,35 +120,46 @@ class MathPracticeApp {
         };
         
         this.displayProblem();
-        this.clearAnswerInput();
+        this.clearInput();
     }
     
     displayProblem() {
-        document.getElementById('num1').textContent = this.currentProblem.num1;
-        document.getElementById('operator').textContent = this.currentProblem.operation;
-        document.getElementById('num2').textContent = this.currentProblem.num2;
-        document.getElementById('answer-display').textContent = '?';
+        const problemDisplay = document.getElementById('problem-display');
+        problemDisplay.textContent = `${this.currentProblem.num1} ${this.currentProblem.operation} ${this.currentProblem.num2} = ?`;
     }
     
-    clearAnswerInput() {
-        const input = document.getElementById('answer-input');
+    clearInput() {
+        const input = document.getElementById('terminal-input');
         input.value = '';
-        input.focus();
+        this.focusInput();
+    }
+    
+    focusInput() {
+        setTimeout(() => {
+            document.getElementById('terminal-input').focus();
+        }, 100);
+    }
+    
+    hideCursor() {
+        document.querySelector('.cursor').style.display = 'none';
+    }
+    
+    showCursor() {
+        document.querySelector('.cursor').style.display = 'inline-block';
     }
     
     checkAnswer() {
-        const userAnswer = parseInt(document.getElementById('answer-input').value);
+        const userAnswer = parseInt(document.getElementById('terminal-input').value);
         
         if (isNaN(userAnswer)) {
-            this.showFeedback('Please enter a number!', false);
+            this.showMessage('ERROR: INVALID INPUT', false);
             return;
         }
         
         if (userAnswer === this.currentProblem.answer) {
             this.score += 10;
             this.problemsSolved++;
-            this.showReward();
-            document.getElementById('answer-display').textContent = this.currentProblem.answer;
+            this.showMessage(this.getRandomRewardMessage(), true);
             this.updateDisplay();
             
             // Auto-generate next problem after a short delay
@@ -168,8 +167,7 @@ class MathPracticeApp {
                 this.generateNewProblem();
             }, 2000);
         } else {
-            this.showFeedback(`Not quite! The answer is ${this.currentProblem.answer}`, false);
-            document.getElementById('answer-display').textContent = this.currentProblem.answer;
+            this.showMessage(`INCORRECT. ANSWER: ${this.currentProblem.answer}`, false);
             
             // Generate new problem after showing correct answer
             setTimeout(() => {
@@ -178,28 +176,14 @@ class MathPracticeApp {
         }
     }
     
-    showReward() {
-        const message = this.getRandomRewardMessage();
-        const rewardElement = document.getElementById('reward-message');
-        
-        rewardElement.textContent = message;
-        rewardElement.classList.add('show');
+    showMessage(message, isSuccess) {
+        const messageElement = document.getElementById('terminal-message');
+        messageElement.textContent = message;
+        messageElement.classList.add('show');
         
         setTimeout(() => {
-            rewardElement.classList.remove('show');
-        }, 1500);
-    }
-    
-    showFeedback(message, isSuccess) {
-        const rewardElement = document.getElementById('reward-message');
-        rewardElement.textContent = message;
-        rewardElement.style.background = isSuccess ? 'var(--success-green)' : 'var(--medium-green)';
-        rewardElement.classList.add('show');
-        
-        setTimeout(() => {
-            rewardElement.classList.remove('show');
-            rewardElement.style.background = 'var(--success-green)';
-        }, 2000);
+            messageElement.classList.remove('show');
+        }, isSuccess ? 1500 : 2500);
     }
     
     getRandomRewardMessage() {
@@ -207,10 +191,10 @@ class MathPracticeApp {
     }
     
     updateDisplay() {
-        document.getElementById('current-level').textContent = `Level ${this.currentLevel}`;
-        document.getElementById('current-operation').textContent = this.currentOperation.charAt(0).toUpperCase() + this.currentOperation.slice(1);
-        document.getElementById('score').textContent = `Score: ${this.score}`;
-        document.getElementById('problems-solved').textContent = `Problems: ${this.problemsSolved}`;
+        document.getElementById('current-level').textContent = `LEVEL ${this.currentLevel}`;
+        document.getElementById('current-operation').textContent = this.currentOperation.toUpperCase();
+        document.getElementById('score-display').textContent = `SCORE: ${this.score}`;
+        document.getElementById('problems-display').textContent = `PROBLEMS: ${this.problemsSolved}`;
     }
     
     showScreen(screenId) {
@@ -221,6 +205,11 @@ class MathPracticeApp {
         
         // Show selected screen
         document.getElementById(screenId).classList.add('active');
+        
+        // Focus input if showing game screen
+        if (screenId === 'game-screen') {
+            this.focusInput();
+        }
     }
     
     randomInt(min, max) {
@@ -230,5 +219,5 @@ class MathPracticeApp {
 
 // Initialize the app when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new MathPracticeApp();
+    new TerminalMathApp();
 });
