@@ -17,6 +17,10 @@ class MathView {
             levelList: document.querySelector('.level-list')
         };
         
+        // Track message state
+        this.messageTimeout = null;
+        this.messageVisible = false;
+        
         // Initialize static UI text
         this.initializeStaticText();
     }
@@ -83,13 +87,38 @@ class MathView {
     }
     
     // Show feedback message
-    showMessage(message, duration = 1500) {
+    showMessage(message, autoDismiss = false, duration = 1500) {
         this.elements.terminalMessage.textContent = message;
         this.elements.terminalMessage.classList.add('show');
+        this.messageVisible = true;
         
-        setTimeout(() => {
-            this.elements.terminalMessage.classList.remove('show');
-        }, duration);
+        // Clear any existing timeout
+        if (this.messageTimeout) {
+            clearTimeout(this.messageTimeout);
+            this.messageTimeout = null;
+        }
+        
+        // Only auto-dismiss if explicitly requested (for success messages)
+        if (autoDismiss) {
+            this.messageTimeout = setTimeout(() => {
+                this.hideMessage();
+            }, duration);
+        }
+    }
+    
+    // Hide feedback message
+    hideMessage() {
+        this.elements.terminalMessage.classList.remove('show');
+        this.messageVisible = false;
+        if (this.messageTimeout) {
+            clearTimeout(this.messageTimeout);
+            this.messageTimeout = null;
+        }
+    }
+    
+    // Check if message is visible
+    isMessageVisible() {
+        return this.messageVisible;
     }
     
     // Clear and focus the input field

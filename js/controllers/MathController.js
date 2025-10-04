@@ -71,14 +71,32 @@ class MathController {
     bindGameEvents() {
         // Bind input events
         this.view.bindInputEvents(
-            () => this.checkAnswer(),           // Submit handler
+            () => this.handleEnterKey(),        // Submit/dismiss handler
             () => this.view.hideCursor(),       // Focus handler
             () => this.view.showCursor()        // Blur handler
         );
     }
     
+    // Handle Enter key press - dismiss message or check answer
+    handleEnterKey() {
+        // If a message is visible, dismiss it first
+        if (this.view.isMessageVisible()) {
+            this.view.hideMessage();
+            this.view.clearAndFocusInput();
+            // Generate next problem after dismissing
+            this.generateNewProblem();
+            return;
+        }
+        
+        // Otherwise, check the answer
+        this.checkAnswer();
+    }
+    
     // Generate and display a new problem
     generateNewProblem() {
+        // Hide any visible message first
+        this.view.hideMessage();
+        
         const problem = this.model.generateProblem();
         this.view.displayProblem(problem);
         this.view.clearAndFocusInput();
@@ -89,29 +107,34 @@ class MathController {
         const userInput = this.view.getUserInput();
         
         if (!userInput || isNaN(parseInt(userInput))) {
-            this.view.showMessage(this.model.localization.t('ERROR_INVALID_INPUT'), 2000);
+            this.view.showMessage(this.model.localization.t('ERROR_INVALID_INPUT'), false);
             return;
         }
         
         if (this.model.checkAnswer(userInput)) {
             // Correct answer
             this.model.updateScore();
-            this.view.showMessage(this.model.getRandomRewardMessage(), 1500);
+            
+            // Check if user earned a badge
+            const badgeMessage = this.model.checkBadge();
+            if (badgeMessage) {
+                this.view.showMessage(badgeMessage, false);
+            } else {
+                this.view.showMessage(this.model.getRandomRewardMessage(), true, 1500);
+            }
+            
             this.view.updateGameStatus(this.model.getGameState());
             
-            // Auto-generate next problem after a short delay
-            setTimeout(() => {
-                this.generateNewProblem();
-            }, 2000);
+            // Auto-generate next problem after a short delay (only for auto-dismissing messages)
+            if (!badgeMessage) {
+                setTimeout(() => {
+                    this.generateNewProblem();
+                }, 2000);
+            }
         } else {
             // Incorrect answer
             const correctAnswer = this.model.currentProblem.answer;
-            this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${correctAnswer}`, 2500);
-            
-            // Generate new problem after showing correct answer
-            setTimeout(() => {
-                this.generateNewProblem();
-            }, 3000);
+            this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${correctAnswer}`, false);
         }
     }
 }
