@@ -1,0 +1,187 @@
+/* Base styles - Theme independent structure */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    padding: 0;
+    overflow: hidden;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header structure */
+header {
+    padding: 10px 0;
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.level-info {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+/* Main content structure */
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen {
+    display: none;
+    flex: 1;
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Level and Operation Selection structure */
+#level-select, #operation-select {
+    font-family: monospace;
+}
+
+#level-select h2, #operation-select h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.level-list, .operation-list {
+    list-style: none;
+    font-size: 1rem;
+}
+
+.level-item, .operation-item {
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 2px 0;
+    transition: background-color 0.1s;
+}
+
+/* Game Screen structure */
+.terminal-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.problem-display {
+    font-size: 3rem;
+    margin-bottom: 40px;
+    font-family: monospace;
+    letter-spacing: 8px;
+}
+
+.input-line {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+.input-prompt {
+    margin-right: 10px;
+}
+
+#terminal-input {
+    background: transparent;
+    border: none;
+    font-family: monospace;
+    font-size: 2rem;
+    outline: none;
+    width: 150px;
+    text-align: left;
+    caret-color: transparent;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+/* Status line structure */
+.status-line {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    padding-top: 10px;
+}
+
+/* Message structure */
+.terminal-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 20px 40px;
+    font-size: 1.5rem;
+    font-family: monospace;
+    text-align: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.terminal-message.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Instructions structure */
+.instructions {
+    position: fixed;
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    font-size: 0.8rem;
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* Responsive structure */
+@media (max-width: 600px) {
+    .problem-display {
+        font-size: 2rem;
+        letter-spacing: 4px;
+    }
+    
+    #terminal-input {
+        font-size: 1.5rem;
+        width: 100px;
+    }
+    
+    .input-line {
+        font-size: 1.5rem;
+    }
+}

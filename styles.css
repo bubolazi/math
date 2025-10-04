@@ -1,0 +1,249 @@
+/* Retro Green Monochrome Computer Theme */
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&display=swap');
+
+:root {
+    --terminal-green: #00ff41;
+    --dark-green: #003300;
+    --bg-black: #000000;
+    --cursor-green: #00ff41;
+    --dim-green: #009900;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    background: var(--bg-black);
+    min-height: 100vh;
+    color: var(--terminal-green);
+    padding: 0;
+    overflow: hidden;
+    font-size: 16px;
+    line-height: 1.2;
+}
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-black);
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Terminal header */
+header {
+    background: var(--bg-black);
+    color: var(--terminal-green);
+    padding: 10px 0;
+    text-align: left;
+    border-bottom: 1px solid var(--terminal-green);
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 1.5rem;
+    font-weight: normal;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.level-info {
+    font-size: 0.9rem;
+    opacity: 0.8;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.screen {
+    display: none;
+    flex: 1;
+}
+
+.screen.active {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Level Selection Screen - Terminal Style */
+#level-select {
+    font-family: 'Courier Prime', monospace;
+}
+
+#level-select h2 {
+    color: var(--terminal-green);
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.level-list {
+    list-style: none;
+    font-size: 1rem;
+}
+
+.level-item {
+    margin-bottom: 8px;
+    cursor: pointer;
+    padding: 2px 0;
+    transition: background-color 0.1s;
+}
+
+.level-item:hover {
+    background-color: var(--dark-green);
+}
+
+.level-item:before {
+    content: "[ ] ";
+    color: var(--terminal-green);
+}
+
+.level-item:hover:before {
+    content: "[X] ";
+    color: var(--terminal-green);
+}
+
+/* Game Screen - Terminal Style */
+.terminal-display {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.problem-display {
+    font-size: 3rem;
+    color: var(--terminal-green);
+    margin-bottom: 40px;
+    font-family: 'Courier Prime', monospace;
+    text-shadow: 0 0 10px var(--terminal-green);
+    letter-spacing: 8px;
+}
+
+.input-line {
+    display: flex;
+    align-items: center;
+    font-size: 2rem;
+    color: var(--terminal-green);
+    margin-bottom: 40px;
+}
+
+.input-prompt {
+    margin-right: 10px;
+}
+
+#terminal-input {
+    background: transparent;
+    border: none;
+    color: var(--terminal-green);
+    font-family: 'Courier Prime', monospace;
+    font-size: 2rem;
+    outline: none;
+    width: 150px;
+    text-align: left;
+    caret-color: transparent;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+/* Blinking cursor */
+.cursor {
+    display: inline-block;
+    background-color: var(--terminal-green);
+    width: 2px;
+    height: 2rem;
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+.status-line {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    color: var(--dim-green);
+    font-size: 0.9rem;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid var(--dim-green);
+    padding-top: 10px;
+}
+
+/* Feedback messages */
+.terminal-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--bg-black);
+    color: var(--terminal-green);
+    padding: 20px 40px;
+    border: 2px solid var(--terminal-green);
+    font-size: 1.5rem;
+    font-family: 'Courier Prime', monospace;
+    text-align: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    text-shadow: 0 0 10px var(--terminal-green);
+}
+
+.terminal-message.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Instructions */
+.instructions {
+    position: fixed;
+    bottom: 60px;
+    left: 20px;
+    right: 20px;
+    color: var(--dim-green);
+    font-size: 0.8rem;
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .problem-display {
+        font-size: 2rem;
+        letter-spacing: 4px;
+    }
+    
+    #terminal-input {
+        font-size: 1.5rem;
+        width: 100px;
+    }
+    
+    .input-line {
+        font-size: 1.5rem;
+    }
+    
+    .cursor {
+        height: 1.5rem;
+    }
+}
+
+/* Remove all the old button styles and other unused styles */

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="bg">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0</title>
+    <!-- Base styles (theme-independent) -->
+    <link rel="stylesheet" href="css/base.css">
+    <!-- Theme styles (easily swappable) -->
+    <link rel="stylesheet" href="css/themes/terminal-green.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0</h1>
+            <div class="level-info">
+                <span id="current-level">НИВО 1</span>
+                <span id="current-operation">СЪБИРАНЕ</span>
+            </div>
+        </header>
+
+        <main>
+            <div id="operation-select" class="screen active">
+                <h2>ИЗБЕРЕТЕ ОПЕРАЦИЯ:</h2>
+                <ul class="operation-list">
+                    <!-- Operations will be dynamically populated by the View -->
+                </ul>
+                <div class="instructions">
+                    КЛИКНЕТЕ НА ОПЕРАЦИЯ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК
+                </div>
+            </div>
+
+            <div id="level-select" class="screen">
+                <h2>ИЗБЕРЕТЕ НИВО НА ТРУДНОСТ:</h2>
+                <ul class="level-list">
+                    <!-- Levels will be dynamically populated by the View -->
+                </ul>
+                <div class="instructions">
+                    КЛИКНЕТЕ НА НИВО ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК
+                </div>
+            </div>
+
+            <div id="game-screen" class="screen">
+                <div class="terminal-display">
+                    <div class="problem-display" id="problem-display">
+                        5 + 3 = ?
+                    </div>
+                    
+                    <div class="input-line">
+                        <span class="input-prompt">></span>
+                        <input type="number" id="terminal-input" autocomplete="off">
+                        <span class="cursor"></span>
+                    </div>
+                </div>
+                
+                <div class="status-line">
+                    <span id="score-display">ТОЧКИ: 0</span>
+                    <span id="problems-display">ЗАДАЧИ: 0</span>
+                </div>
+                
+                <div class="instructions">
+                    НАТИСНЕТЕ ENTER ЗА ИЗПРАЩАНЕ НА ОТГОВОР • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА
+                </div>
+            </div>
+        </main>
+
+        <div id="terminal-message" class="terminal-message"></div>
+    </div>
+
+    <!-- MVC Architecture with Localization and Operations -->
+    <script src="js/models/LocalizationModel.js"></script>
+    <script src="js/models/extensions/AdditionLevels.js"></script>
+    <script src="js/models/extensions/SubtractionLevels.js"></script>
+    <script src="js/models/OperationManager.js"></script>
+    <script src="js/models/MathModel.js"></script>
+    <script src="js/views/MathView.js"></script>
+    <script src="js/controllers/MathController.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

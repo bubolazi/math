@@ -1,0 +1,110 @@
+/* Retro Amber Theme - Alternative theme example */
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+:root {
+    --amber-main: #ffb000;
+    --amber-dark: #cc6600;
+    --bg-dark: #1a0d00;
+    --amber-dim: #cc8800;
+}
+
+/* Theme-specific color application */
+body {
+    font-family: 'Share Tech Mono', 'Courier New', monospace;
+    background: var(--bg-dark);
+    color: var(--amber-main);
+}
+
+.container {
+    background: var(--bg-dark);
+}
+
+/* Terminal header colors */
+header {
+    background: var(--bg-dark);
+    color: var(--amber-main);
+    border-bottom: 1px solid var(--amber-main);
+}
+
+header h1 {
+    color: var(--amber-main);
+}
+
+.level-info {
+    color: var(--amber-main);
+}
+
+/* Level selection colors */
+#level-select h2 {
+    color: var(--amber-main);
+}
+
+.level-item:hover {
+    background-color: var(--amber-dark);
+}
+
+.level-item:before {
+    content: "▶ ";
+    color: var(--amber-main);
+}
+
+.level-item:hover:before {
+    content: "● ";
+    color: var(--amber-main);
+}
+
+/* Game screen colors */
+.problem-display {
+    color: var(--amber-main);
+    text-shadow: 0 0 15px var(--amber-main);
+}
+
+.input-line {
+    color: var(--amber-main);
+}
+
+#terminal-input {
+    color: var(--amber-main);
+    font-family: 'Share Tech Mono', monospace;
+}
+
+/* Blinking cursor */
+.cursor {
+    display: inline-block;
+    background-color: var(--amber-main);
+    width: 2px;
+    height: 2rem;
+    animation: amber-blink 1.2s infinite;
+    margin-left: 2px;
+}
+
+@keyframes amber-blink {
+    0%, 40% { opacity: 1; }
+    41%, 100% { opacity: 0; }
+}
+
+/* Status line colors */
+.status-line {
+    color: var(--amber-dim);
+    border-top: 1px solid var(--amber-dim);
+}
+
+/* Message colors */
+.terminal-message {
+    background: var(--bg-dark);
+    color: var(--amber-main);
+    border: 2px solid var(--amber-main);
+    text-shadow: 0 0 15px var(--amber-main);
+}
+
+/* Instructions colors */
+.instructions {
+    color: var(--amber-dim);
+}
+
+/* Responsive cursor adjustment */
+@media (max-width: 600px) {
+    .cursor {
+        height: 1.5rem;
+    }
+}
