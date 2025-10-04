@@ -120,17 +120,10 @@ class MathController {
             if (badgeMessage) {
                 this.view.showMessage(badgeMessage, false);
             } else {
-                this.view.showMessage(this.model.getRandomRewardMessage(), true, 1500);
+                this.view.showMessage(this.model.getRandomRewardMessage(), false);
             }
             
             this.view.updateGameStatus(this.model.getGameState());
-            
-            // Auto-generate next problem after a short delay (only for auto-dismissing messages)
-            if (!badgeMessage) {
-                setTimeout(() => {
-                    this.generateNewProblem();
-                }, 2000);
-            }
         } else {
             // Incorrect answer
             const correctAnswer = this.model.currentProblem.answer;
