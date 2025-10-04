@@ -7,6 +7,7 @@ class MathModel {
         this.currentOperation = operationExtension.getOperationKey().toLowerCase();
         this.score = 0;
         this.problemsSolved = 0;
+        this.correctAnswersStreak = 0; // Track consecutive correct answers for badges
         this.currentProblem = null;
         
         // Get levels from the operation extension
@@ -29,12 +30,14 @@ class MathModel {
     updateScore() {
         this.score += 10;
         this.problemsSolved++;
+        this.correctAnswersStreak++;
     }
     
     // Reset game statistics
     resetStats() {
         this.score = 0;
         this.problemsSolved = 0;
+        this.correctAnswersStreak = 0;
     }
     
     // Set current level and operation
@@ -48,6 +51,35 @@ class MathModel {
         const rewardMessageKeys = this.operationExtension.getRewardMessages();
         const messages = this.localization.tArray(rewardMessageKeys[0]);
         return messages[Math.floor(Math.random() * messages.length)];
+    }
+    
+    // Check if user earned a badge (every 5 correct answers)
+    checkBadge() {
+        if (this.correctAnswersStreak > 0 && this.correctAnswersStreak % 5 === 0) {
+            // Reset streak after awarding badge
+            this.correctAnswersStreak = 0;
+            return this.generateBadgeMessage();
+        }
+        return null;
+    }
+    
+    // Generate a random badge message with grammatically correct gender matching
+    generateBadgeMessage() {
+        const badgeTemplate = this.localization.t('BADGE_MESSAGE');
+        
+        // Randomly select a gender category
+        const genders = ['NEUTER', 'FEMININE', 'MASCULINE'];
+        const randomGender = genders[Math.floor(Math.random() * genders.length)];
+        
+        // Get animals and adjectives for the selected gender
+        const animals = this.localization.tArray(`BADGE_ANIMALS_${randomGender}`);
+        const adjectives = this.localization.tArray(`BADGE_ADJECTIVES_${randomGender}`);
+        
+        // Select random animal and adjective from the same gender category
+        const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
+        const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
+        
+        return `${badgeTemplate} ${randomAdjective} ${randomAnimal}`;
     }
     
     // Get localized level descriptions

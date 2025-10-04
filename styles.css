@@ -160,6 +160,17 @@ main {
     text-overflow: clip;
 }
 
+/* Hide number input arrows for all browsers */
+#terminal-input::-webkit-outer-spin-button,
+#terminal-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+#terminal-input[type=number] {
+    -moz-appearance: textfield;
+}
+
 /* Blinking cursor */
 .cursor {
     display: inline-block;
