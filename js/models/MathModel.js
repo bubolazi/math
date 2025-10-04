@@ -63,12 +63,19 @@ class MathModel {
         return null;
     }
     
-    // Generate a random badge message
+    // Generate a random badge message with grammatically correct gender matching
     generateBadgeMessage() {
-        const animals = this.localization.tArray('BADGE_ANIMALS');
-        const adjectives = this.localization.tArray('BADGE_ADJECTIVES');
         const badgeTemplate = this.localization.t('BADGE_MESSAGE');
         
+        // Randomly select a gender category
+        const genders = ['NEUTER', 'FEMININE', 'MASCULINE'];
+        const randomGender = genders[Math.floor(Math.random() * genders.length)];
+        
+        // Get animals and adjectives for the selected gender
+        const animals = this.localization.tArray(`BADGE_ANIMALS_${randomGender}`);
+        const adjectives = this.localization.tArray(`BADGE_ADJECTIVES_${randomGender}`);
+        
+        // Select random animal and adjective from the same gender category
         const randomAnimal = animals[Math.floor(Math.random() * animals.length)];
         const randomAdjective = adjectives[Math.floor(Math.random() * adjectives.length)];
         

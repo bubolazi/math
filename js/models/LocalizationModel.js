@@ -67,30 +67,30 @@ class LocalizationModel {
                     'НЕВЕРОЯТНИ УМЕНИЯ ЗА ИЗВАЖДАНЕ!'
                 ],
                 
-                // Badge system - Cute animals
-                'BADGE_ANIMALS': [
+                // Badge system - Animals organized by gender
+                // Среден род (neuter) - ends in -о, -е
+                'BADGE_ANIMALS_NEUTER': [
                     'Мече',
                     'Зайче',
                     'Котенце',
                     'Кученце',
                     'Лисиче',
-                    'Катеричка',
-                    'Пеликан',
-                    'Делфин',
-                    'Коала',
-                    'Панда',
-                    'Пингвин',
                     'Тигърче',
                     'Слонче',
                     'Жирафче',
-                    'Овчица',
                     'Пиленце',
                     'Патенце',
-                    'Хамстер',
                     'Морско Конче',
-                    'Октопод',
                     'Бухалче',
-                    'Папагалче',
+                    'Папагалче'
+                ],
+                
+                // Женски род (feminine) - ends in -а, -я
+                'BADGE_ANIMALS_FEMININE': [
+                    'Катеричка',
+                    'Коала',
+                    'Панда',
+                    'Овчица',
                     'Пеперудка',
                     'Калинка',
                     'Рибка',
@@ -99,8 +99,18 @@ class LocalizationModel {
                     'Пчеличка'
                 ],
                 
-                // Badge system - Adjectives
-                'BADGE_ADJECTIVES': [
+                // Мъжки род (masculine) - ends in consonant
+                'BADGE_ANIMALS_MASCULINE': [
+                    'Пеликан',
+                    'Делфин',
+                    'Пингвин',
+                    'Хамстер',
+                    'Октопод'
+                ],
+                
+                // Badge system - Adjectives organized by gender
+                // Среден род (neuter) - ends in -о, -е
+                'BADGE_ADJECTIVES_NEUTER': [
                     'Слънчево',
                     'Усмихнато',
                     'Щастливо',
@@ -129,6 +139,70 @@ class LocalizationModel {
                     'Мечтано',
                     'Прекрасно',
                     'Чудесно'
+                ],
+                
+                // Женски род (feminine) - ends in -а, -я
+                'BADGE_ADJECTIVES_FEMININE': [
+                    'Слънчева',
+                    'Усмихната',
+                    'Щастлива',
+                    'Весела',
+                    'Умна',
+                    'Златна',
+                    'Сребърна',
+                    'Танцуваща',
+                    'Радостна',
+                    'Блестяща',
+                    'Смела',
+                    'Любопитна',
+                    'Игрива',
+                    'Храбра',
+                    'Енергична',
+                    'Мила',
+                    'Вълшебна',
+                    'Искряща',
+                    'Светла',
+                    'Топла',
+                    'Нежна',
+                    'Приятелска',
+                    'Усърдна',
+                    'Шарена',
+                    'Звездна',
+                    'Мечтана',
+                    'Прекрасна',
+                    'Чудесна'
+                ],
+                
+                // Мъжки род (masculine) - ends in consonant
+                'BADGE_ADJECTIVES_MASCULINE': [
+                    'Слънчев',
+                    'Усмихнат',
+                    'Щастлив',
+                    'Весел',
+                    'Умен',
+                    'Златен',
+                    'Сребърен',
+                    'Танцуващ',
+                    'Радостен',
+                    'Блестящ',
+                    'Смел',
+                    'Любопитен',
+                    'Игрив',
+                    'Храбър',
+                    'Енергичен',
+                    'Мил',
+                    'Вълшебен',
+                    'Искрящ',
+                    'Светъл',
+                    'Топъл',
+                    'Нежен',
+                    'Приятелски',
+                    'Усърден',
+                    'Шарен',
+                    'Звезден',
+                    'Мечтан',
+                    'Прекрасен',
+                    'Чудесен'
                 ],
                 
                 // Badge message template
@@ -167,29 +241,27 @@ class LocalizationModel {
                     'FLAWLESS EXECUTION!',
                     'IMPRESSIVE ACCURACY!'
                 ],
-                'BADGE_ANIMALS': [
-                    'Bear',
+                // English doesn't have grammatical gender, so we use single lists
+                'BADGE_ANIMALS_NEUTER': [
+                    'Bear Cub',
                     'Bunny',
                     'Kitten',
                     'Puppy',
-                    'Fox',
-                    'Squirrel',
-                    'Pelican',
-                    'Dolphin',
-                    'Koala',
-                    'Panda',
-                    'Penguin',
+                    'Fox Cub',
                     'Tiger Cub',
                     'Elephant',
                     'Giraffe',
-                    'Sheep',
                     'Chick',
                     'Duckling',
-                    'Hamster',
                     'Seahorse',
-                    'Octopus',
-                    'Owl',
-                    'Parrot',
+                    'Owlet',
+                    'Parrot'
+                ],
+                'BADGE_ANIMALS_FEMININE': [
+                    'Squirrel',
+                    'Koala',
+                    'Panda',
+                    'Sheep',
                     'Butterfly',
                     'Ladybug',
                     'Fish',
@@ -197,7 +269,74 @@ class LocalizationModel {
                     'Ant',
                     'Bee'
                 ],
-                'BADGE_ADJECTIVES': [
+                'BADGE_ANIMALS_MASCULINE': [
+                    'Pelican',
+                    'Dolphin',
+                    'Penguin',
+                    'Hamster',
+                    'Octopus'
+                ],
+                'BADGE_ADJECTIVES_NEUTER': [
+                    'Sunny',
+                    'Smiling',
+                    'Happy',
+                    'Cheerful',
+                    'Smart',
+                    'Golden',
+                    'Silver',
+                    'Dancing',
+                    'Joyful',
+                    'Brilliant',
+                    'Brave',
+                    'Curious',
+                    'Playful',
+                    'Courageous',
+                    'Energetic',
+                    'Sweet',
+                    'Magical',
+                    'Sparkling',
+                    'Bright',
+                    'Warm',
+                    'Gentle',
+                    'Friendly',
+                    'Diligent',
+                    'Colorful',
+                    'Starry',
+                    'Dreamy',
+                    'Wonderful',
+                    'Amazing'
+                ],
+                'BADGE_ADJECTIVES_FEMININE': [
+                    'Sunny',
+                    'Smiling',
+                    'Happy',
+                    'Cheerful',
+                    'Smart',
+                    'Golden',
+                    'Silver',
+                    'Dancing',
+                    'Joyful',
+                    'Brilliant',
+                    'Brave',
+                    'Curious',
+                    'Playful',
+                    'Courageous',
+                    'Energetic',
+                    'Sweet',
+                    'Magical',
+                    'Sparkling',
+                    'Bright',
+                    'Warm',
+                    'Gentle',
+                    'Friendly',
+                    'Diligent',
+                    'Colorful',
+                    'Starry',
+                    'Dreamy',
+                    'Wonderful',
+                    'Amazing'
+                ],
+                'BADGE_ADJECTIVES_MASCULINE': [
                     'Sunny',
                     'Smiling',
                     'Happy',
