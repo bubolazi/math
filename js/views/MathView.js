@@ -171,6 +171,16 @@ class MathView {
         this.elements.terminalInput.addEventListener('blur', blurHandler);
     }
     
+    // Bind click event on game screen to keep input focused
+    bindGameScreenClick() {
+        this.elements.gameScreen.addEventListener('click', (e) => {
+            // Refocus input unless the click was on the input itself
+            if (e.target !== this.elements.terminalInput) {
+                this.focusInput();
+            }
+        });
+    }
+    
     // Hide/show cursor for input field
     hideCursor() {
         const cursor = document.querySelector('.cursor');
