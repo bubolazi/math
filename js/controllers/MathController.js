@@ -75,6 +75,9 @@ class MathController {
             () => this.view.hideCursor(),       // Focus handler
             () => this.view.showCursor()        // Blur handler
         );
+        
+        // Bind click on game screen to keep input focused
+        this.view.bindGameScreenClick();
     }
     
     // Handle Enter key press - dismiss message or check answer
