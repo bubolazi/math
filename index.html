@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0</title>
+    <title>УЧЕБЕН ТЕРМИНАЛ v1.0</title>
     <!-- Base styles (theme-independent) -->
     <link rel="stylesheet" href="css/base.css">
     <!-- Theme styles (easily swappable) -->
@@ -12,21 +12,31 @@
 <body>
     <div class="container">
         <header>
-            <h1>МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0</h1>
+            <h1>УЧЕБЕН ТЕРМИНАЛ v1.0</h1>
             <div class="level-info">
                 <span id="current-level">НИВО 1</span>
-                <span id="current-operation">СЪБИРАНЕ</span>
+                <span id="current-operation">ДЕЙНОСТ</span>
             </div>
         </header>
 
         <main>
-            <div id="operation-select" class="screen active">
-                <h2>ИЗБЕРЕТЕ ОПЕРАЦИЯ:</h2>
+            <div id="subject-select" class="screen active">
+                <h2>ИЗБЕРЕТЕ ПРЕДМЕТ:</h2>
+                <ul class="subject-list">
+                    <!-- Subjects will be dynamically populated by the View -->
+                </ul>
+                <div class="instructions">
+                    КЛИКНЕТЕ НА ПРЕДМЕТ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК
+                </div>
+            </div>
+
+            <div id="operation-select" class="screen">
+                <h2>ИЗБЕРЕТЕ ДЕЙНОСТ:</h2>
                 <ul class="operation-list">
                     <!-- Operations will be dynamically populated by the View -->
                 </ul>
                 <div class="instructions">
-                    КЛИКНЕТЕ НА ОПЕРАЦИЯ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК
+                    КЛИКНЕТЕ НА ДЕЙНОСТ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК
                 </div>
             </div>
 
@@ -67,12 +77,26 @@
         <div id="terminal-message" class="terminal-message"></div>
     </div>
 
-    <!-- MVC Architecture with Localization and Operations -->
+    <!-- MVC Architecture with Localization and Subject/Activity Management -->
     <script src="js/models/LocalizationModel.js"></script>
+    
+    <!-- Math subject extensions -->
     <script src="js/models/extensions/AdditionLevels.js"></script>
     <script src="js/models/extensions/SubtractionLevels.js"></script>
     <script src="js/models/OperationManager.js"></script>
     <script src="js/models/MathModel.js"></script>
+    
+    <!-- Bulgarian Language subject extensions -->
+    <script src="js/models/extensions/LettersActivity.js"></script>
+    <script src="js/models/extensions/SyllablesActivity.js"></script>
+    <script src="js/models/extensions/WordsActivity.js"></script>
+    <script src="js/models/BulgarianActivityManager.js"></script>
+    <script src="js/models/BulgarianLanguageModel.js"></script>
+    
+    <!-- Subject Manager -->
+    <script src="js/models/SubjectManager.js"></script>
+    
+    <!-- View and Controller -->
     <script src="js/views/MathView.js"></script>
     <script src="js/controllers/MathController.js"></script>
     <script src="js/app.js"></script>

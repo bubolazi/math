@@ -1,4 +1,4 @@
-// Application Entry Point - MVC Initialization with Operation Selection
+// Application Entry Point - MVC Initialization with Subject Selection
 class MathApp {
     constructor() {
         this.init();
@@ -17,21 +17,21 @@ class MathApp {
         // Initialize localization (Bulgarian by default)
         const localization = new LocalizationModel('bg');
         
-        // Initialize operation manager
-        const operationManager = new OperationManager();
+        // Initialize subject manager
+        const subjectManager = new SubjectManager();
         
-        // Initialize controller with operation selection
-        const controller = new MathController(localization, operationManager);
+        // Initialize controller with subject selection
+        const controller = new MathController(localization, subjectManager);
         
         // Store references for potential future use
         this.localization = localization;
-        this.operationManager = operationManager;
+        this.subjectManager = subjectManager;
         this.controller = controller;
         
         // Make app instance available globally for debugging
         window.mathApp = this;
         
-        console.log('Math Practice App initialized with MVC architecture, Bulgarian localization, and operation selection');
+        console.log('Learning App initialized with MVC architecture, Bulgarian localization, and subject selection');
     }
 }
 

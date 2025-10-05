@@ -59,12 +59,12 @@ main {
     flex-direction: column;
 }
 
-/* Level and Operation Selection structure */
-#level-select, #operation-select {
+/* Level, Operation, and Subject Selection structure */
+#level-select, #operation-select, #subject-select {
     font-family: monospace;
 }
 
-#level-select h2, #operation-select h2 {
+#level-select h2, #operation-select h2, #subject-select h2 {
     font-size: 1.2rem;
     margin-bottom: 20px;
     font-weight: normal;
@@ -72,12 +72,12 @@ main {
     letter-spacing: 1px;
 }
 
-.level-list, .operation-list {
+.level-list, .operation-list, .subject-list {
     list-style: none;
     font-size: 1rem;
 }
 
-.level-item, .operation-item {
+.level-item, .operation-item, .subject-item {
     margin-bottom: 8px;
     cursor: pointer;
     padding: 2px 0;

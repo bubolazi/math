@@ -1,11 +1,40 @@
 // Controller: Coordinates between Model and View
 class MathController {
-    constructor(localization, operationManager) {
+    constructor(localization, subjectManager) {
         this.localization = localization;
-        this.operationManager = operationManager;
+        this.subjectManager = subjectManager;
+        this.activityManager = null; // Will be set after subject selection
         this.view = new MathView(localization);
-        this.model = null; // Will be initialized after operation selection
+        this.model = null; // Will be initialized after operation/activity selection
+        this.currentSubject = null; // Track current subject
         
+        this.initializeSubjectSelection();
+    }
+    
+    initializeSubjectSelection() {
+        // Show subject selection screen
+        this.view.showScreen('subject-select');
+        
+        // Render available subjects
+        this.view.renderSubjectList(this.subjectManager.getAvailableSubjects(), this.localization);
+        
+        // Bind subject selection event
+        this.view.bindSubjectSelection((subject) => {
+            this.selectSubject(subject);
+        });
+    }
+    
+    selectSubject(subjectName) {
+        this.currentSubject = subjectName;
+        
+        // Get the activity manager for this subject
+        this.activityManager = this.subjectManager.getActivityManager(subjectName);
+        if (!this.activityManager) {
+            console.error(`Subject ${subjectName} not found`);
+            return;
+        }
+        
+        // Show operation/activity selection
         this.initializeOperationSelection();
     }
     
@@ -13,8 +42,8 @@ class MathController {
         // Show operation selection screen
         this.view.showScreen('operation-select');
         
-        // Render available operations
-        this.view.renderOperationList(this.operationManager.getAvailableOperations(), this.localization);
+        // Render available operations/activities
+        this.view.renderOperationList(this.activityManager.getAvailableOperations(), this.localization);
         
         // Bind operation selection event
         this.view.bindOperationSelection((operation) => {
@@ -24,14 +53,19 @@ class MathController {
     
     selectOperation(operationName) {
         // Get the operation extension
-        const operationExtension = this.operationManager.getOperationExtension(operationName);
+        const operationExtension = this.activityManager.getOperationExtension(operationName);
         if (!operationExtension) {
             console.error(`Operation ${operationName} not found`);
             return;
         }
         
         // Initialize the model with the selected operation
-        this.model = new MathModel(this.localization, operationExtension);
+        // Choose the correct model class based on subject
+        if (this.currentSubject === 'math') {
+            this.model = new MathModel(this.localization, operationExtension);
+        } else if (this.currentSubject === 'bulgarian') {
+            this.model = new BulgarianLanguageModel(this.localization, operationExtension);
+        }
         
         // Initialize level selection for this operation
         this.initializeLevelSelection();
@@ -61,6 +95,14 @@ class MathController {
         this.model.setLevel(level, operation);
         this.model.resetStats();
         this.view.showScreen('game-screen');
+        
+        // Update game instructions based on subject
+        if (this.currentSubject === 'bulgarian') {
+            this.view.updateGameInstructions('GAME_INSTRUCTIONS');
+        } else {
+            this.view.updateGameInstructions('GAME_INSTRUCTIONS_MATH');
+        }
+        
         this.generateNewProblem();
         this.view.updateGameStatus(this.model.getGameState());
         
@@ -109,9 +151,20 @@ class MathController {
     checkAnswer() {
         const userInput = this.view.getUserInput();
         
-        if (!userInput || isNaN(parseInt(userInput))) {
-            this.view.showMessage(this.model.localization.t('ERROR_INVALID_INPUT'), false);
-            return;
+        // For Bulgarian Language, allow empty input (parent just presses Enter)
+        // For Math, require a number
+        if (this.currentSubject === 'bulgarian') {
+            // Bulgarian: empty (Enter) or '0' are valid inputs
+            if (userInput !== '' && userInput !== '0') {
+                this.view.showMessage(this.model.localization.t('ERROR_INVALID_INPUT'), false);
+                return;
+            }
+        } else {
+            // Math: require a number
+            if (!userInput || isNaN(parseInt(userInput))) {
+                this.view.showMessage(this.model.localization.t('ERROR_INVALID_INPUT'), false);
+                return;
+            }
         }
         
         if (this.model.checkAnswer(userInput)) {
@@ -129,8 +182,13 @@ class MathController {
             this.view.updateGameStatus(this.model.getGameState());
         } else {
             // Incorrect answer
-            const correctAnswer = this.model.currentProblem.answer;
-            this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${correctAnswer}`, false);
+            if (this.currentSubject === 'bulgarian') {
+                // For Bulgarian, there's no "correct answer" to show
+                this.view.showMessage(this.model.localization.t('INCORRECT_ANSWER_BULGARIAN'), false);
+            } else {
+                const correctAnswer = this.model.currentProblem.answer;
+                this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${correctAnswer}`, false);
+            }
         }
     }
 }

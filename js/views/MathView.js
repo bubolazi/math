@@ -3,6 +3,7 @@ class MathView {
     constructor(localization) {
         this.localization = localization;
         this.elements = {
+            subjectSelect: document.getElementById('subject-select'),
             operationSelect: document.getElementById('operation-select'),
             levelSelect: document.getElementById('level-select'),
             gameScreen: document.getElementById('game-screen'),
@@ -13,6 +14,7 @@ class MathView {
             scoreDisplay: document.getElementById('score-display'),
             problemsDisplay: document.getElementById('problems-display'),
             terminalMessage: document.getElementById('terminal-message'),
+            subjectList: document.querySelector('.subject-list'),
             operationList: document.querySelector('.operation-list'),
             levelList: document.querySelector('.level-list')
         };
@@ -33,6 +35,13 @@ class MathView {
         // Update header
         const header = document.querySelector('header h1');
         if (header) header.textContent = this.localization.t('MATH_TERMINAL');
+        
+        // Update subject selection screen
+        const subjectSelectTitle = document.querySelector('#subject-select h2');
+        if (subjectSelectTitle) subjectSelectTitle.textContent = this.localization.t('SELECT_SUBJECT');
+        
+        const subjectInstructions = document.querySelector('#subject-select .instructions');
+        if (subjectInstructions) subjectInstructions.textContent = this.localization.t('SUBJECT_INSTRUCTIONS');
         
         // Update operation selection screen
         const operationSelectTitle = document.querySelector('#operation-select h2');
@@ -72,10 +81,24 @@ class MathView {
         }
     }
     
-    // Display a math problem
+    // Display a problem (math or Bulgarian language)
     displayProblem(problem) {
-        this.elements.problemDisplay.textContent = 
-            `${problem.num1} ${problem.operation} ${problem.num2} = ?`;
+        if (problem.operation === 'read') {
+            // Bulgarian Language activity - just show the letter/syllable/word
+            this.elements.problemDisplay.textContent = problem.display;
+        } else {
+            // Math problem
+            this.elements.problemDisplay.textContent = 
+                `${problem.num1} ${problem.operation} ${problem.num2} = ?`;
+        }
+    }
+    
+    // Update game instructions dynamically
+    updateGameInstructions(instructionKey) {
+        const gameInstructions = document.querySelector('#game-screen .instructions');
+        if (gameInstructions) {
+            gameInstructions.textContent = this.localization.t(instructionKey);
+        }
     }
     
     // Update the game status display
@@ -140,6 +163,15 @@ class MathView {
     }
     
     // Bind event listeners (delegated to controller)
+    bindSubjectSelection(handler) {
+        this.elements.subjectList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('subject-item')) {
+                const subject = e.target.dataset.subject;
+                handler(subject);
+            }
+        });
+    }
+    
     bindOperationSelection(handler) {
         this.elements.operationList.addEventListener('click', (e) => {
             if (e.target.classList.contains('operation-item')) {
@@ -190,6 +222,22 @@ class MathView {
     showCursor() {
         const cursor = document.querySelector('.cursor');
         if (cursor) cursor.style.display = 'inline-block';
+    }
+    
+    // Render subject list
+    renderSubjectList(subjects, localization) {
+        if (!this.elements.subjectList) return;
+        
+        this.elements.subjectList.innerHTML = '';
+        Object.keys(subjects).forEach(subjectName => {
+            const subject = subjects[subjectName];
+            const listItem = document.createElement('li');
+            listItem.className = 'subject-item';
+            listItem.dataset.subject = subjectName;
+            const displayName = localization.t(subject.key);
+            listItem.textContent = `${subject.icon} ${displayName}`;
+            this.elements.subjectList.appendChild(listItem);
+        });
     }
     
     // Render operation list
