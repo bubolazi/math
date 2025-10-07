@@ -10,8 +10,14 @@ class LocalizationModel {
         return {
             'bg': {
                 // Page title and header
-                'MATH_TERMINAL': 'МАТЕМАТИЧЕСКИ ТЕРМИНАЛ v1.0',
+                'MATH_TERMINAL': 'УЧЕБЕН ТЕРМИНАЛ v1.0',
                 'LEVEL': 'НИВО',
+                
+                // Subjects
+                'SELECT_SUBJECT': 'ИЗБЕРЕТЕ ПРЕДМЕТ:',
+                'MATH_SUBJECT': 'МАТЕМАТИКА',
+                'BULGARIAN_SUBJECT': 'БЪЛГАРСКИ ЕЗИК',
+                'SUBJECT_INSTRUCTIONS': 'КЛИКНЕТЕ НА ПРЕДМЕТ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК',
                 
                 // Operations
                 'ADDITION': 'СЪБИРАНЕ',
@@ -19,25 +25,43 @@ class LocalizationModel {
                 'MULTIPLICATION': 'УМНОЖЕНИЕ',
                 'DIVISION': 'ДЕЛЕНИЕ',
                 
-                // Operation selection
-                'SELECT_OPERATION': 'ИЗБЕРЕТЕ ОПЕРАЦИЯ:',
-                'OPERATION_INSTRUCTIONS': 'КЛИКНЕТЕ НА ОПЕРАЦИЯ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК',
+                // Bulgarian Language Activities
+                'LETTERS': 'БУКВИ',
+                'SYLLABLES': 'СРИЧКИ',
+                'WORDS': 'ДУМИ',
+                
+                // Operation/Activity selection
+                'SELECT_OPERATION': 'ИЗБЕРЕТЕ ДЕЙНОСТ:',
+                'OPERATION_INSTRUCTIONS': 'КЛИКНЕТЕ НА ДЕЙНОСТ ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК',
                 
                 // Level selection screen
                 'SELECT_DIFFICULTY_LEVEL': 'ИЗБЕРЕТЕ НИВО НА ТРУДНОСТ:',
-                // Level descriptions
+                // Math level descriptions
                 'SINGLE_DIGITS': 'ЕДНОЦИФРЕНИ ЧИСЛА (1-9)',
                 'DOUBLE_DIGITS': 'ДВУЦИФРЕНИ ЧИСЛА (10-19)',
                 'UP_TO_20': 'ДО 20',
                 'UP_TO_50': 'ДО 50',
                 'UP_TO_100': 'ДО 100',
+                
+                // Bulgarian Language level descriptions
+                'VOWELS': 'ГЛАСНИ БУКВИ',
+                'CONSONANTS': 'СЪГЛАСНИ БУКВИ',
+                'ALL_LETTERS': 'ВСИЧКИ БУКВИ',
+                'SIMPLE_SYLLABLES': 'ПРОСТИ СРИЧКИ',
+                'COMPLEX_SYLLABLES': 'СЛОЖНИ СРИЧКИ',
+                'ALL_SYLLABLES': 'ВСИЧКИ СРИЧКИ',
+                'TWO_SYLLABLE_WORDS': 'ДВУСРИЧНИ ДУМИ',
+                'THREE_SYLLABLE_WORDS': 'ТРИСРИЧНИ ДУМИ',
+                'ALL_WORDS': 'ВСИЧКИ ДУМИ',
+                
                 'LEVEL_INSTRUCTIONS': 'КЛИКНЕТЕ НА НИВО ЗА ЗАПОЧВАНЕ • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ ТУК',
                 
                 // Game screen
                 'INPUT_PROMPT': '>',
                 'SCORE': 'ТОЧКИ',
                 'PROBLEMS': 'ЗАДАЧИ',
-                'GAME_INSTRUCTIONS': 'НАТИСНЕТЕ ENTER ЗА ИЗПРАЩАНЕ НА ОТГОВОР • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА',
+                'GAME_INSTRUCTIONS': 'ENTER = ПРАВИЛНО • 0 + ENTER = ГРЕШНО • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА',
+                'GAME_INSTRUCTIONS_MATH': 'НАТИСНЕТЕ ENTER ЗА ИЗПРАЩАНЕ НА ОТГОВОР • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА',
                 
                 // Reward messages
                 'REWARD_MESSAGES': [
@@ -65,6 +89,20 @@ class LocalizationModel {
                     'ВПЕЧАТЛЯВАЩА РАБОТА С МИНУС!',
                     'ИЗКЛЮЧИТЕЛНО ИЗВАЖДАНЕ!',
                     'НЕВЕРОЯТНИ УМЕНИЯ ЗА ИЗВАЖДАНЕ!'
+                ],
+                
+                // Bulgarian Language reward messages
+                'BULGARIAN_REWARD_MESSAGES': [
+                    'БРАВО! ОТЛИЧНО ЧЕТЕНЕ!',
+                    'ПЕРФЕКТНО ПРОЧЕТЕНА!',
+                    'НЕВЕРОЯТНА РАБОТА!',
+                    'БЛЕСТЯЩО ЧЕТЕНЕ!',
+                    'ПРЕВЪЗХОДНО!',
+                    'БЕЗУПРЕЧНО ПРОЧЕТЕНО!',
+                    'ВЕЛИКОЛЕПНА РАБОТА!',
+                    'ВПЕЧАТЛЯВАЩО ЧЕТЕНЕ!',
+                    'ИЗКЛЮЧИТЕЛНО УМЕНИЕ!',
+                    'ЧУДЕСНО ПРОЧЕТЕНО!'
                 ],
                 
                 // Badge system - Animals organized by gender
@@ -210,7 +248,8 @@ class LocalizationModel {
                 
                 // Error messages
                 'ERROR_INVALID_INPUT': 'ГРЕШКА: НЕВАЛИДЕН ВХОД',
-                'INCORRECT_ANSWER': 'НЕПРАВИЛНО. ОТГОВОР:'
+                'INCORRECT_ANSWER': 'НЕПРАВИЛНО. ОТГОВОР:',
+                'INCORRECT_ANSWER_BULGARIAN': 'ОПИТАЙ ПАК!'
             },
             
             // Keep English as fallback
