@@ -192,12 +192,21 @@ class MathView {
     }
     
     // Bind input events
-    bindInputEvents(submitHandler, focusHandler, blurHandler) {
+    bindInputEvents(submitHandler, focusHandler, blurHandler, backspaceHandler = null) {
         this.elements.terminalInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 submitHandler();
             }
         });
+        
+        // Handle Backspace for Bulgarian language wrong answers
+        if (backspaceHandler) {
+            this.elements.terminalInput.addEventListener('keydown', (e) => {
+                if (e.key === 'Backspace') {
+                    backspaceHandler();
+                }
+            });
+        }
         
         this.elements.terminalInput.addEventListener('focus', focusHandler);
         this.elements.terminalInput.addEventListener('blur', blurHandler);

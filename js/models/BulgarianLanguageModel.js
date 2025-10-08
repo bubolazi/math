@@ -20,12 +20,11 @@ class BulgarianLanguageModel {
         return this.currentProblem;
     }
     
-    // Check if the parent input is correct (Enter = correct, 0 = incorrect)
+    // Check if the parent input is correct (Enter = correct, Backspace handled separately)
     checkAnswer(userAnswer) {
-        // For Bulgarian language, we expect either empty/Enter (correct) or '0' (incorrect)
-        // Since parent presses Enter for correct, empty input or any non-zero input means correct
-        // Parent presses '0' for incorrect
-        return userAnswer === '' || userAnswer === null || userAnswer === undefined || userAnswer !== '0';
+        // For Bulgarian language, empty input (Enter key) means correct
+        // Wrong answers are submitted via Backspace key and handled separately in the controller
+        return userAnswer === '' || userAnswer === null || userAnswer === undefined;
     }
     
     // Update score for correct answer

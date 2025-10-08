@@ -112,10 +112,15 @@ class MathController {
     
     bindGameEvents() {
         // Bind input events
+        const backspaceHandler = (this.currentSubject === 'bulgarian') 
+            ? () => this.handleBackspaceKey() 
+            : null;
+        
         this.view.bindInputEvents(
             () => this.handleEnterKey(),        // Submit/dismiss handler
             () => this.view.hideCursor(),       // Focus handler
-            () => this.view.showCursor()        // Blur handler
+            () => this.view.showCursor(),       // Blur handler
+            backspaceHandler                    // Backspace handler (Bulgarian only)
         );
         
         // Bind click on game screen to keep input focused
@@ -137,6 +142,22 @@ class MathController {
         this.checkAnswer();
     }
     
+    // Handle Backspace key press - submit wrong answer for Bulgarian subject
+    handleBackspaceKey() {
+        // If a message is visible, dismiss it first
+        if (this.view.isMessageVisible()) {
+            this.view.hideMessage();
+            this.view.clearAndFocusInput();
+            // Generate next problem after dismissing
+            this.generateNewProblem();
+            return;
+        }
+        
+        // For Bulgarian subject, Backspace means wrong answer
+        // Set a special marker to indicate this was a Backspace submission
+        this.checkAnswerAsWrong();
+    }
+    
     // Generate and display a new problem
     generateNewProblem() {
         // Hide any visible message first
@@ -154,8 +175,9 @@ class MathController {
         // For Bulgarian Language, allow empty input (parent just presses Enter)
         // For Math, require a number
         if (this.currentSubject === 'bulgarian') {
-            // Bulgarian: empty (Enter) or '0' are valid inputs
-            if (userInput !== '' && userInput !== '0') {
+            // Bulgarian: only empty (Enter for correct) is valid
+            // Wrong answers are submitted via Backspace, not by typing
+            if (userInput !== '') {
                 this.view.showMessage(this.model.localization.t('ERROR_INVALID_INPUT'), false);
                 return;
             }
@@ -190,5 +212,11 @@ class MathController {
                 this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${correctAnswer}`, false);
             }
         }
+    }
+    
+    // Check answer as wrong (for Backspace submissions in Bulgarian)
+    checkAnswerAsWrong() {
+        // For Bulgarian subject, show incorrect answer message
+        this.view.showMessage(this.model.localization.t('INCORRECT_ANSWER_BULGARIAN'), false);
     }
 }
