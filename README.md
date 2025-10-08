@@ -1,4 +1,4 @@
-# Math Practice for Kids
+# Learning Practice for Kids
 
 A beautiful, kid-friendly web application for preschool children to practice basic math operations. Features a green monochrome theme and progressive difficulty levels.
 
