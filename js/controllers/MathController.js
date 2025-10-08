@@ -116,11 +116,42 @@ class MathController {
             ? () => this.handleBackspaceKey() 
             : null;
         
+        // Create input filter based on subject
+        let inputFilter = null;
+        if (this.currentSubject === 'bulgarian') {
+            // Bulgarian: block all character input, allow only navigation/control keys
+            inputFilter = (e) => {
+                // Allow: Backspace, Tab, Enter, Escape, Arrow keys, Delete
+                const allowedKeys = ['Backspace', 'Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete'];
+                if (allowedKeys.includes(e.key)) {
+                    return; // Allow these keys
+                }
+                // Block all other input
+                e.preventDefault();
+            };
+        } else if (this.currentSubject === 'math') {
+            // Math: allow only numeric input (0-9)
+            inputFilter = (e) => {
+                // Allow: Backspace, Tab, Enter, Escape, Arrow keys, Delete
+                const allowedKeys = ['Backspace', 'Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete'];
+                if (allowedKeys.includes(e.key)) {
+                    return; // Allow control keys
+                }
+                // Allow only digits 0-9
+                if (e.key >= '0' && e.key <= '9') {
+                    return; // Allow numeric input
+                }
+                // Block all other input (letters, symbols, etc.)
+                e.preventDefault();
+            };
+        }
+        
         this.view.bindInputEvents(
             () => this.handleEnterKey(),        // Submit/dismiss handler
             () => this.view.hideCursor(),       // Focus handler
             () => this.view.showCursor(),       // Blur handler
-            backspaceHandler                    // Backspace handler (Bulgarian only)
+            backspaceHandler,                   // Backspace handler (Bulgarian only)
+            inputFilter                         // Input filter
         );
         
         // Bind click on game screen to keep input focused

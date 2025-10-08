@@ -192,7 +192,7 @@ class MathView {
     }
     
     // Bind input events
-    bindInputEvents(submitHandler, focusHandler, blurHandler, backspaceHandler = null) {
+    bindInputEvents(submitHandler, focusHandler, blurHandler, backspaceHandler = null, inputFilter = null) {
         this.elements.terminalInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 submitHandler();
@@ -205,6 +205,13 @@ class MathView {
                 if (e.key === 'Backspace') {
                     backspaceHandler();
                 }
+            });
+        }
+        
+        // Apply input filter if provided
+        if (inputFilter) {
+            this.elements.terminalInput.addEventListener('keydown', (e) => {
+                inputFilter(e);
             });
         }
         
