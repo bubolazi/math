@@ -60,7 +60,7 @@ class LocalizationModel {
                 'INPUT_PROMPT': '>',
                 'SCORE': 'ТОЧКИ',
                 'PROBLEMS': 'ЗАДАЧИ',
-                'GAME_INSTRUCTIONS': 'ENTER = ПРАВИЛНО • 0 + ENTER = ГРЕШНО • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА',
+                'GAME_INSTRUCTIONS': 'ENTER = ПРАВИЛНО • BACKSPACE = ГРЕШНО • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА',
                 'GAME_INSTRUCTIONS_MATH': 'НАТИСНЕТЕ ENTER ЗА ИЗПРАЩАНЕ НА ОТГОВОР • ОБНОВЕТЕ СТРАНИЦАТА ЗА ВРЪЩАНЕ КЪМ НИВАТА',
                 
                 // Reward messages
