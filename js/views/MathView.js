@@ -360,15 +360,17 @@ class MathView {
         if (!this.elements.levelList) return;
         
         this.elements.levelList.innerHTML = '';
+        let index = 1;
         Object.keys(levels).forEach(levelNum => {
             const level = levels[levelNum];
             const listItem = document.createElement('li');
             listItem.className = 'level-item';
             listItem.dataset.level = levelNum;
             listItem.dataset.operation = 'current';
-            listItem.dataset.index = levelNum;
+            listItem.dataset.index = index;
             listItem.textContent = `${levelNum}. ${level.description}`;
             this.elements.levelList.appendChild(listItem);
+            index++;
         });
     }
 }
