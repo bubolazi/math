@@ -7,8 +7,7 @@ class MathView {
             operationSelect: document.getElementById('operation-select'),
             levelSelect: document.getElementById('level-select'),
             gameScreen: document.getElementById('game-screen'),
-            currentLevel: document.getElementById('current-level'),
-            currentOperation: document.getElementById('current-operation'),
+            breadcrumbNav: document.getElementById('breadcrumb-nav'),
             problemDisplay: document.getElementById('problem-display'),
             terminalInput: document.getElementById('terminal-input'),
             scoreDisplay: document.getElementById('score-display'),
@@ -86,11 +85,42 @@ class MathView {
         if (problem.operation === 'read') {
             // Bulgarian Language activity - just show the letter/syllable/word
             this.elements.problemDisplay.textContent = problem.display;
+        } else if (problem.operation === 'place_value_recognition') {
+            // Place Value Level 1 - Recognize ones or tens
+            const questionText = problem.questionType === 'ones' 
+                ? this.localization.t('WHICH_DIGIT_ONES')
+                : this.localization.t('WHICH_DIGIT_TENS');
+            this.elements.problemDisplay.textContent = `${problem.display}\n${questionText}`;
+        } else if (problem.operation === 'place_value_calculation') {
+            // Place Value Level 2 - Step-by-step calculation
+            this.displayPlaceValueStep(problem);
         } else {
-            // Math problem
+            // Standard math problem
             this.elements.problemDisplay.textContent = 
                 `${problem.num1} ${problem.operation} ${problem.num2} = ?`;
         }
+    }
+    
+    // Display Place Value step-by-step calculation
+    displayPlaceValueStep(problem) {
+        const step = problem.currentStep || 1;
+        let displayText = '';
+        
+        if (step === 1) {
+            // Step 1: Add the ones
+            displayText = `${this.localization.t('ONES_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.ones1} + ${problem.ones2} = ?`;
+        } else if (step === 2) {
+            // Step 2: Add the tens (including carry if any)
+            const tensDisplay = problem.carryOver > 0 
+                ? `Десетици: ${problem.tens1} + ${problem.tens2} + ${problem.carryOver} (пренос) = ?`
+                : `Десетици: ${problem.tens1} + ${problem.tens2} = ?`;
+            displayText = `${this.localization.t('TENS_STEP')}\n${problem.num1} + ${problem.num2}\n${tensDisplay}`;
+        } else if (step === 3) {
+            // Step 3: Combine the results
+            displayText = `${this.localization.t('COMBINE_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.onesFinal}, Десетици: ${problem.tensFinal}\nРезултат = ?`;
+        }
+        
+        this.elements.problemDisplay.textContent = displayText;
     }
     
     // Update game instructions dynamically
@@ -103,10 +133,20 @@ class MathView {
     
     // Update the game status display
     updateGameStatus(gameState) {
-        this.elements.currentLevel.textContent = `${this.localization.t('LEVEL')} ${gameState.level}`;
-        this.elements.currentOperation.textContent = this.localization.t(gameState.operationKey);
         this.elements.scoreDisplay.textContent = `${this.localization.t('SCORE')}: ${gameState.score}`;
         this.elements.problemsDisplay.textContent = `${this.localization.t('PROBLEMS')}: ${gameState.problemsSolved}`;
+    }
+    
+    // Update breadcrumb navigation
+    updateBreadcrumb(breadcrumbParts) {
+        if (!this.elements.breadcrumbNav) return;
+        
+        if (!breadcrumbParts || breadcrumbParts.length === 0) {
+            this.elements.breadcrumbNav.textContent = '';
+            return;
+        }
+        
+        this.elements.breadcrumbNav.textContent = breadcrumbParts.join(' > ');
     }
     
     // Show feedback message

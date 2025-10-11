@@ -3,10 +3,7 @@ class SubtractionLevels {
     static getLevels() {
         return {
             1: { min: 1, max: 9, descriptionKey: 'SINGLE_DIGITS' },
-            2: { min: 10, max: 19, descriptionKey: 'DOUBLE_DIGITS' },
-            3: { min: 1, max: 20, descriptionKey: 'UP_TO_20' },
-            4: { min: 1, max: 50, descriptionKey: 'UP_TO_50' },
-            5: { min: 1, max: 100, descriptionKey: 'UP_TO_100' }
+            2: { min: 10, max: 19, descriptionKey: 'DOUBLE_DIGITS' }
         };
     }
     
