@@ -429,8 +429,8 @@ class MathController {
             : null;
         
         if (previousState === 'level_select') {
-            // Go back to level selection
-            this.initializeLevelSelection();
+            // Go back to level selection - don't push to stack again
+            this.showLevelSelection();
         } else if (previousState === 'activity') {
             // Go back to operation/activity selection
             this.initializeOperationSelection();
@@ -441,5 +441,37 @@ class MathController {
             // Default: go back to subject selection
             this.initializeSubjectSelection();
         }
+    }
+    
+    // Show level selection without modifying navigation stack
+    showLevelSelection() {
+        // Render level list for the selected operation
+        this.view.renderLevelList(this.model.getLocalizedLevels());
+        
+        // Unbind any previous keyboard selections
+        this.view.unbindKeyboardSelections();
+        
+        // Bind level selection event
+        this.view.bindLevelSelection((level, operation) => {
+            this.startLevel(level, operation);
+        });
+        
+        // Bind keyboard selection
+        this.view.bindLevelKeyboardSelection((level, operation) => {
+            this.startLevel(level, operation);
+        });
+        
+        // Show level selection screen
+        this.view.showScreen('level-select');
+        
+        // Update breadcrumb
+        const subjectKey = this.subjectManager.getSubjectKey(this.currentSubject);
+        const activityKey = this.activityManager.getOperationKey(this.currentActivity);
+        this.view.updateBreadcrumb([
+            this.localization.t(subjectKey),
+            this.localization.t(activityKey)
+        ]);
+        
+        this.view.updateGameStatus(this.model.getGameState());
     }
 }
