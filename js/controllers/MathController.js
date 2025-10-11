@@ -18,8 +18,16 @@ class MathController {
         // Render available subjects
         this.view.renderSubjectList(this.subjectManager.getAvailableSubjects(), this.localization);
         
+        // Unbind any previous keyboard selections
+        this.view.unbindKeyboardSelections();
+        
         // Bind subject selection event
         this.view.bindSubjectSelection((subject) => {
+            this.selectSubject(subject);
+        });
+        
+        // Bind keyboard selection
+        this.view.bindSubjectKeyboardSelection((subject) => {
             this.selectSubject(subject);
         });
     }
@@ -45,8 +53,16 @@ class MathController {
         // Render available operations/activities
         this.view.renderOperationList(this.activityManager.getAvailableOperations(), this.localization);
         
+        // Unbind any previous keyboard selections
+        this.view.unbindKeyboardSelections();
+        
         // Bind operation selection event
         this.view.bindOperationSelection((operation) => {
+            this.selectOperation(operation);
+        });
+        
+        // Bind keyboard selection
+        this.view.bindOperationKeyboardSelection((operation) => {
             this.selectOperation(operation);
         });
     }
@@ -75,8 +91,16 @@ class MathController {
         // Render level list for the selected operation
         this.view.renderLevelList(this.model.getLocalizedLevels());
         
+        // Unbind any previous keyboard selections
+        this.view.unbindKeyboardSelections();
+        
         // Bind level selection event
         this.view.bindLevelSelection((level, operation) => {
+            this.startLevel(level, operation);
+        });
+        
+        // Bind keyboard selection
+        this.view.bindLevelKeyboardSelection((level, operation) => {
             this.startLevel(level, operation);
         });
         
@@ -91,6 +115,9 @@ class MathController {
             console.error('Model not initialized. Select an operation first.');
             return;
         }
+        
+        // Unbind keyboard selections when entering game screen
+        this.view.unbindKeyboardSelections();
         
         this.model.setLevel(level, operation);
         this.model.resetStats();

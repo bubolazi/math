@@ -191,6 +191,83 @@ class MathView {
         });
     }
     
+    // Bind keyboard selection for subjects
+    bindSubjectKeyboardSelection(handler) {
+        const keyHandler = (e) => {
+            // Only handle numeric keys 1-9
+            if (e.key >= '1' && e.key <= '9') {
+                const index = parseInt(e.key);
+                const items = this.elements.subjectList.querySelectorAll('.subject-item');
+                if (index > 0 && index <= items.length) {
+                    const selectedItem = items[index - 1];
+                    const subject = selectedItem.dataset.subject;
+                    handler(subject);
+                }
+            }
+        };
+        
+        document.addEventListener('keydown', keyHandler);
+        // Store reference to remove later if needed
+        this._subjectKeyHandler = keyHandler;
+    }
+    
+    // Bind keyboard selection for operations
+    bindOperationKeyboardSelection(handler) {
+        const keyHandler = (e) => {
+            // Only handle numeric keys 1-9
+            if (e.key >= '1' && e.key <= '9') {
+                const index = parseInt(e.key);
+                const items = this.elements.operationList.querySelectorAll('.operation-item');
+                if (index > 0 && index <= items.length) {
+                    const selectedItem = items[index - 1];
+                    const operation = selectedItem.dataset.operation;
+                    handler(operation);
+                }
+            }
+        };
+        
+        document.addEventListener('keydown', keyHandler);
+        // Store reference to remove later if needed
+        this._operationKeyHandler = keyHandler;
+    }
+    
+    // Bind keyboard selection for levels
+    bindLevelKeyboardSelection(handler) {
+        const keyHandler = (e) => {
+            // Only handle numeric keys 1-9
+            if (e.key >= '1' && e.key <= '9') {
+                const index = parseInt(e.key);
+                const items = this.elements.levelList.querySelectorAll('.level-item');
+                if (index > 0 && index <= items.length) {
+                    const selectedItem = items[index - 1];
+                    const level = parseInt(selectedItem.dataset.level);
+                    const operation = selectedItem.dataset.operation;
+                    handler(level, operation);
+                }
+            }
+        };
+        
+        document.addEventListener('keydown', keyHandler);
+        // Store reference to remove later if needed
+        this._levelKeyHandler = keyHandler;
+    }
+    
+    // Unbind keyboard selection handlers to prevent conflicts
+    unbindKeyboardSelections() {
+        if (this._subjectKeyHandler) {
+            document.removeEventListener('keydown', this._subjectKeyHandler);
+            this._subjectKeyHandler = null;
+        }
+        if (this._operationKeyHandler) {
+            document.removeEventListener('keydown', this._operationKeyHandler);
+            this._operationKeyHandler = null;
+        }
+        if (this._levelKeyHandler) {
+            document.removeEventListener('keydown', this._levelKeyHandler);
+            this._levelKeyHandler = null;
+        }
+    }
+    
     // Bind input events
     bindInputEvents(submitHandler, focusHandler, blurHandler, backspaceHandler = null, inputFilter = null) {
         this.elements.terminalInput.addEventListener('keypress', (e) => {
@@ -245,14 +322,17 @@ class MathView {
         if (!this.elements.subjectList) return;
         
         this.elements.subjectList.innerHTML = '';
+        let index = 1;
         Object.keys(subjects).forEach(subjectName => {
             const subject = subjects[subjectName];
             const listItem = document.createElement('li');
             listItem.className = 'subject-item';
             listItem.dataset.subject = subjectName;
+            listItem.dataset.index = index;
             const displayName = localization.t(subject.key);
-            listItem.textContent = `${subject.icon} ${displayName}`;
+            listItem.textContent = `${index}. ${subject.icon} ${displayName}`;
             this.elements.subjectList.appendChild(listItem);
+            index++;
         });
     }
     
@@ -261,14 +341,17 @@ class MathView {
         if (!this.elements.operationList) return;
         
         this.elements.operationList.innerHTML = '';
+        let index = 1;
         Object.keys(operations).forEach(operationName => {
             const operation = operations[operationName];
             const listItem = document.createElement('li');
             listItem.className = 'operation-item';
             listItem.dataset.operation = operationName;
+            listItem.dataset.index = index;
             const displayName = localization.t(operation.key);
-            listItem.textContent = `${operation.icon} ${displayName}`;
+            listItem.textContent = `${index}. ${operation.icon} ${displayName}`;
             this.elements.operationList.appendChild(listItem);
+            index++;
         });
     }
     
