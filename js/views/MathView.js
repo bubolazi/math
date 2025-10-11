@@ -366,6 +366,7 @@ class MathView {
             listItem.className = 'level-item';
             listItem.dataset.level = levelNum;
             listItem.dataset.operation = 'current';
+            listItem.dataset.index = levelNum;
             listItem.textContent = `${levelNum}. ${level.description}`;
             this.elements.levelList.appendChild(listItem);
         });
