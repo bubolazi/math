@@ -276,6 +276,15 @@ class MathController {
         if (this.view.isMessageVisible()) {
             this.view.hideMessage();
             this.view.clearAndFocusInput();
+            
+            // Check if we're in the middle of a multi-step Place Value problem
+            const problem = this.model.currentProblem;
+            if (problem && problem.operation === 'place_value_calculation' && problem.currentStep && problem.currentStep < 4) {
+                // Don't generate new problem - we're still in multi-step mode
+                // Just clear the message and wait for next input
+                return;
+            }
+            
             // Generate next problem after dismissing
             this.generateNewProblem();
             return;
@@ -332,6 +341,13 @@ class MathController {
             }
         }
         
+        // Check if this is a multi-step Place Value problem
+        const problem = this.model.currentProblem;
+        if (problem.operation === 'place_value_calculation' && problem.currentStep) {
+            this.checkPlaceValueStep(parseInt(userInput));
+            return;
+        }
+        
         if (this.model.checkAnswer(userInput)) {
             // Correct answer
             this.model.updateScore();
@@ -354,6 +370,43 @@ class MathController {
                 const correctAnswer = this.model.currentProblem.answer;
                 this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${correctAnswer}`, false);
             }
+        }
+    }
+    
+    // Check Place Value step-by-step answer
+    checkPlaceValueStep(userAnswer) {
+        const problem = this.model.currentProblem;
+        const currentStep = problem.currentStep;
+        const expectedAnswer = problem.stepAnswers[currentStep - 1];
+        
+        if (userAnswer === expectedAnswer) {
+            // Correct answer for this step
+            if (currentStep < 3) {
+                // Move to next step
+                problem.currentStep++;
+                this.view.showMessage('ПРАВИЛНО! Следваща стъпка...', false);
+                // After a short delay, show the next step
+                setTimeout(() => {
+                    this.view.hideMessage();
+                    this.view.displayProblem(problem);
+                    this.view.clearAndFocusInput();
+                }, 1500);
+            } else {
+                // Final step completed - award points and generate new problem
+                this.model.updateScore();
+                
+                const badgeMessage = this.model.checkBadge();
+                if (badgeMessage) {
+                    this.view.showMessage(badgeMessage, false);
+                } else {
+                    this.view.showMessage(this.model.getRandomRewardMessage(), false);
+                }
+                
+                this.view.updateGameStatus(this.model.getGameState());
+            }
+        } else {
+            // Incorrect answer
+            this.view.showMessage(`${this.model.localization.t('INCORRECT_ANSWER')} ${expectedAnswer}`, false);
         }
     }
     

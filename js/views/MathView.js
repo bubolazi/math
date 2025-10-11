@@ -93,15 +93,34 @@ class MathView {
             this.elements.problemDisplay.textContent = `${problem.display}\n${questionText}`;
         } else if (problem.operation === 'place_value_calculation') {
             // Place Value Level 2 - Step-by-step calculation
-            // This will be handled by a special multi-step process
-            // For now, show the basic addition problem
-            this.elements.problemDisplay.textContent = 
-                `${problem.num1} + ${problem.num2} = ?`;
+            this.displayPlaceValueStep(problem);
         } else {
             // Standard math problem
             this.elements.problemDisplay.textContent = 
                 `${problem.num1} ${problem.operation} ${problem.num2} = ?`;
         }
+    }
+    
+    // Display Place Value step-by-step calculation
+    displayPlaceValueStep(problem) {
+        const step = problem.currentStep || 1;
+        let displayText = '';
+        
+        if (step === 1) {
+            // Step 1: Add the ones
+            displayText = `${this.localization.t('ONES_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.ones1} + ${problem.ones2} = ?`;
+        } else if (step === 2) {
+            // Step 2: Add the tens (including carry if any)
+            const tensDisplay = problem.carryOver > 0 
+                ? `Десетици: ${problem.tens1} + ${problem.tens2} + ${problem.carryOver} (пренос) = ?`
+                : `Десетици: ${problem.tens1} + ${problem.tens2} = ?`;
+            displayText = `${this.localization.t('TENS_STEP')}\n${problem.num1} + ${problem.num2}\n${tensDisplay}`;
+        } else if (step === 3) {
+            // Step 3: Combine the results
+            displayText = `${this.localization.t('COMBINE_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.onesFinal}, Десетици: ${problem.tensFinal}\nРезултат = ?`;
+        }
+        
+        this.elements.problemDisplay.textContent = displayText;
     }
     
     // Update game instructions dynamically

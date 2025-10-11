@@ -34,6 +34,12 @@ class PlaceValueActivity {
             const onesSum = ones1 + ones2;
             const tensSum = tens1 + tens2;
             
+            // Handle carry-over from ones to tens
+            const onesFinal = onesSum % 10;
+            const carryOver = Math.floor(onesSum / 10);
+            const tensFinal = tensSum + carryOver;
+            const finalAnswer = tensFinal * 10 + onesFinal;
+            
             return {
                 num1: num1,
                 num2: num2,
@@ -42,10 +48,14 @@ class PlaceValueActivity {
                 ones2: ones2,
                 tens2: tens2,
                 onesSum: onesSum,
+                onesFinal: onesFinal,
+                carryOver: carryOver,
                 tensSum: tensSum,
+                tensFinal: tensFinal,
                 operation: 'place_value_calculation',
-                answer: num1 + num2,
-                step: 1 // Track which step we're on
+                answer: finalAnswer,
+                currentStep: 1, // Track which step we're on (1=ones, 2=tens, 3=combine)
+                stepAnswers: [onesSum, tensSum + carryOver, finalAnswer]
             };
         }
     }
