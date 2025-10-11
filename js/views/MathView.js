@@ -7,8 +7,7 @@ class MathView {
             operationSelect: document.getElementById('operation-select'),
             levelSelect: document.getElementById('level-select'),
             gameScreen: document.getElementById('game-screen'),
-            currentLevel: document.getElementById('current-level'),
-            currentOperation: document.getElementById('current-operation'),
+            breadcrumbNav: document.getElementById('breadcrumb-nav'),
             problemDisplay: document.getElementById('problem-display'),
             terminalInput: document.getElementById('terminal-input'),
             scoreDisplay: document.getElementById('score-display'),
@@ -86,8 +85,20 @@ class MathView {
         if (problem.operation === 'read') {
             // Bulgarian Language activity - just show the letter/syllable/word
             this.elements.problemDisplay.textContent = problem.display;
+        } else if (problem.operation === 'place_value_recognition') {
+            // Place Value Level 1 - Recognize ones or tens
+            const questionText = problem.questionType === 'ones' 
+                ? this.localization.t('WHICH_DIGIT_ONES')
+                : this.localization.t('WHICH_DIGIT_TENS');
+            this.elements.problemDisplay.textContent = `${problem.display}\n${questionText}`;
+        } else if (problem.operation === 'place_value_calculation') {
+            // Place Value Level 2 - Step-by-step calculation
+            // This will be handled by a special multi-step process
+            // For now, show the basic addition problem
+            this.elements.problemDisplay.textContent = 
+                `${problem.num1} + ${problem.num2} = ?`;
         } else {
-            // Math problem
+            // Standard math problem
             this.elements.problemDisplay.textContent = 
                 `${problem.num1} ${problem.operation} ${problem.num2} = ?`;
         }
@@ -103,10 +114,20 @@ class MathView {
     
     // Update the game status display
     updateGameStatus(gameState) {
-        this.elements.currentLevel.textContent = `${this.localization.t('LEVEL')} ${gameState.level}`;
-        this.elements.currentOperation.textContent = this.localization.t(gameState.operationKey);
         this.elements.scoreDisplay.textContent = `${this.localization.t('SCORE')}: ${gameState.score}`;
         this.elements.problemsDisplay.textContent = `${this.localization.t('PROBLEMS')}: ${gameState.problemsSolved}`;
+    }
+    
+    // Update breadcrumb navigation
+    updateBreadcrumb(breadcrumbParts) {
+        if (!this.elements.breadcrumbNav) return;
+        
+        if (!breadcrumbParts || breadcrumbParts.length === 0) {
+            this.elements.breadcrumbNav.textContent = '';
+            return;
+        }
+        
+        this.elements.breadcrumbNav.textContent = breadcrumbParts.join(' > ');
     }
     
     // Show feedback message

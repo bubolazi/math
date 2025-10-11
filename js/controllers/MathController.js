@@ -7,13 +7,24 @@ class MathController {
         this.view = new MathView(localization);
         this.model = null; // Will be initialized after operation/activity selection
         this.currentSubject = null; // Track current subject
+        this.currentActivity = null; // Track current activity
+        this.currentLevel = null; // Track current level
+        this.navigationStack = []; // Stack for tracking navigation history
         
         this.initializeSubjectSelection();
     }
     
     initializeSubjectSelection() {
+        this.currentSubject = null;
+        this.currentActivity = null;
+        this.currentLevel = null;
+        this.navigationStack = [];
+        
         // Show subject selection screen
         this.view.showScreen('subject-select');
+        
+        // Clear breadcrumb
+        this.view.updateBreadcrumb([]);
         
         // Render available subjects
         this.view.renderSubjectList(this.subjectManager.getAvailableSubjects(), this.localization);
@@ -34,6 +45,9 @@ class MathController {
     
     selectSubject(subjectName) {
         this.currentSubject = subjectName;
+        this.currentActivity = null;
+        this.currentLevel = null;
+        this.navigationStack = ['subject'];
         
         // Get the activity manager for this subject
         this.activityManager = this.subjectManager.getActivityManager(subjectName);
@@ -41,6 +55,10 @@ class MathController {
             console.error(`Subject ${subjectName} not found`);
             return;
         }
+        
+        // Update breadcrumb
+        const subjectKey = this.subjectManager.getSubjectKey(subjectName);
+        this.view.updateBreadcrumb([this.localization.t(subjectKey)]);
         
         // Show operation/activity selection
         this.initializeOperationSelection();
@@ -68,6 +86,9 @@ class MathController {
     }
     
     selectOperation(operationName) {
+        this.currentActivity = operationName;
+        this.navigationStack.push('activity');
+        
         // Get the operation extension
         const operationExtension = this.activityManager.getOperationExtension(operationName);
         if (!operationExtension) {
@@ -83,11 +104,31 @@ class MathController {
             this.model = new BulgarianLanguageModel(this.localization, operationExtension);
         }
         
-        // Initialize level selection for this operation
-        this.initializeLevelSelection();
+        // Update breadcrumb
+        const subjectKey = this.subjectManager.getSubjectKey(this.currentSubject);
+        const activityKey = this.activityManager.getOperationKey(operationName);
+        this.view.updateBreadcrumb([
+            this.localization.t(subjectKey),
+            this.localization.t(activityKey)
+        ]);
+        
+        // Check if activity has multiple levels or just one
+        const levels = this.model.getLocalizedLevels();
+        const levelCount = Object.keys(levels).length;
+        
+        if (levelCount === 1) {
+            // Single level - go directly to practice
+            const singleLevel = parseInt(Object.keys(levels)[0]);
+            this.startLevel(singleLevel, 'current');
+        } else {
+            // Multiple levels - show level selection
+            this.initializeLevelSelection();
+        }
     }
     
     initializeLevelSelection() {
+        this.navigationStack.push('level_select');
+        
         // Render level list for the selected operation
         this.view.renderLevelList(this.model.getLocalizedLevels());
         
@@ -116,12 +157,24 @@ class MathController {
             return;
         }
         
+        this.currentLevel = level;
+        this.navigationStack.push('game');
+        
         // Unbind keyboard selections when entering game screen
         this.view.unbindKeyboardSelections();
         
         this.model.setLevel(level, operation);
         this.model.resetStats();
         this.view.showScreen('game-screen');
+        
+        // Update breadcrumb with level
+        const subjectKey = this.subjectManager.getSubjectKey(this.currentSubject);
+        const activityKey = this.activityManager.getOperationKey(this.currentActivity);
+        this.view.updateBreadcrumb([
+            this.localization.t(subjectKey),
+            this.localization.t(activityKey),
+            `${this.localization.t('LEVEL')} ${level}`
+        ]);
         
         // Update game instructions based on subject
         if (this.currentSubject === 'bulgarian') {
@@ -143,13 +196,33 @@ class MathController {
             ? () => this.handleBackspaceKey() 
             : null;
         
+        // Track backspace timing for double-backspace detection (Bulgarian only)
+        let lastBackspaceTime = 0;
+        const doubleBackspaceThreshold = 500; // milliseconds
+        
         // Create input filter based on subject
         let inputFilter = null;
         if (this.currentSubject === 'bulgarian') {
             // Bulgarian: block all character input, allow only navigation/control keys
             inputFilter = (e) => {
-                // Allow: Backspace, Tab, Enter, Escape, Arrow keys, Delete
-                const allowedKeys = ['Backspace', 'Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete'];
+                // Handle backspace specially for navigation
+                if (e.key === 'Backspace') {
+                    const now = Date.now();
+                    const timeSinceLastBackspace = now - lastBackspaceTime;
+                    lastBackspaceTime = now;
+                    
+                    // If double backspace (within threshold), navigate back
+                    if (timeSinceLastBackspace < doubleBackspaceThreshold) {
+                        this.navigateBack();
+                        e.preventDefault();
+                        return;
+                    }
+                    // First backspace - handled by backspaceHandler for wrong answer
+                    return;
+                }
+                
+                // Allow: Tab, Enter, Escape, Arrow keys, Delete
+                const allowedKeys = ['Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete'];
                 if (allowedKeys.includes(e.key)) {
                     return; // Allow these keys
                 }
@@ -157,10 +230,22 @@ class MathController {
                 e.preventDefault();
             };
         } else if (this.currentSubject === 'math') {
-            // Math: allow only numeric input (0-9)
+            // Math: allow only numeric input (0-9) and backspace navigation
             inputFilter = (e) => {
-                // Allow: Backspace, Tab, Enter, Escape, Arrow keys, Delete
-                const allowedKeys = ['Backspace', 'Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete'];
+                // Handle backspace for navigation
+                if (e.key === 'Backspace') {
+                    // Check if input is empty - if so, navigate back
+                    if (this.view.getUserInput() === '') {
+                        this.navigateBack();
+                        e.preventDefault();
+                        return;
+                    }
+                    // Otherwise, allow normal backspace behavior
+                    return;
+                }
+                
+                // Allow: Tab, Enter, Escape, Arrow keys, Delete
+                const allowedKeys = ['Tab', 'Enter', 'Escape', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Delete'];
                 if (allowedKeys.includes(e.key)) {
                     return; // Allow control keys
                 }
@@ -276,5 +361,32 @@ class MathController {
     checkAnswerAsWrong() {
         // For Bulgarian subject, show incorrect answer message
         this.view.showMessage(this.model.localization.t('INCORRECT_ANSWER_BULGARIAN'), false);
+    }
+    
+    // Navigate back to the previous screen
+    navigateBack() {
+        // Pop current state
+        if (this.navigationStack.length > 0) {
+            this.navigationStack.pop();
+        }
+        
+        // Get previous state
+        const previousState = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        
+        if (previousState === 'level_select') {
+            // Go back to level selection
+            this.initializeLevelSelection();
+        } else if (previousState === 'activity') {
+            // Go back to operation/activity selection
+            this.initializeOperationSelection();
+        } else if (previousState === 'subject') {
+            // Go back to subject selection
+            this.initializeSubjectSelection();
+        } else {
+            // Default: go back to subject selection
+            this.initializeSubjectSelection();
+        }
     }
 }
