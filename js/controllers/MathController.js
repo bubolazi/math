@@ -49,6 +49,9 @@ class MathController {
         this.currentLevel = null;
         this.navigationStack = ['subject'];
         
+        // Pass current subject to view
+        this.view.currentSubject = subjectName;
+        
         // Get the activity manager for this subject
         this.activityManager = this.subjectManager.getActivityManager(subjectName);
         if (!this.activityManager) {
@@ -232,6 +235,13 @@ class MathController {
         } else if (this.currentSubject === 'math') {
             // Math: allow only numeric input (0-9) and backspace navigation
             inputFilter = (e) => {
+                // Handle + key for tooltips
+                if (e.key === '+' || e.key === '=') { // = is + on many keyboards without shift
+                    this.handlePlusKey();
+                    e.preventDefault();
+                    return;
+                }
+                
                 // Handle backspace for navigation
                 if (e.key === 'Backspace') {
                     // Check if input is empty - if so, navigate back
@@ -279,7 +289,7 @@ class MathController {
             
             // Check if we're in the middle of a multi-step Place Value problem
             const problem = this.model.currentProblem;
-            if (problem && problem.operation === 'place_value_calculation' && problem.currentStep && problem.currentStep < 4) {
+            if (problem && problem.operation === 'place_value_calculation' && problem.currentStep && problem.currentStep < 5) {
                 // Don't generate new problem - we're still in multi-step mode
                 // Just clear the message and wait for next input
                 return;
@@ -292,6 +302,23 @@ class MathController {
         
         // Otherwise, check the answer
         this.checkAnswer();
+    }
+    
+    // Handle + key press - show tooltips if available
+    handlePlusKey() {
+        const problem = this.model.currentProblem;
+        
+        // Check if current problem has info icon (tooltips available)
+        if (problem && problem.hasInfoIcon) {
+            if (this.view.isTooltipVisible()) {
+                // Tooltip is visible, cycle to next or close
+                this.view.cycleTooltip(['TOOLTIP_CARRY']);
+            } else {
+                // No tooltip visible, initialize and show first one
+                this.view.initializeTooltips(['TOOLTIP_CARRY']);
+                this.view.cycleTooltip(['TOOLTIP_CARRY']);
+            }
+        }
     }
     
     // Handle Backspace key press - submit wrong answer for Bulgarian subject
@@ -381,7 +408,7 @@ class MathController {
         
         if (userAnswer === expectedAnswer) {
             // Correct answer for this step
-            if (currentStep < 3) {
+            if (currentStep < 4) {
                 // Move to next step
                 problem.currentStep++;
                 this.view.showMessage('ПРАВИЛНО! Следваща стъпка...', false);

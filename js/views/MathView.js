@@ -22,6 +22,12 @@ class MathView {
         this.messageTimeout = null;
         this.messageVisible = false;
         
+        // Track tooltip state
+        this.tooltipVisible = false;
+        this.currentTooltips = [];
+        this.currentTooltipIndex = 0;
+        this.currentSubject = null; // Will be set by controller
+        
         // Initialize static UI text
         this.initializeStaticText();
     }
@@ -105,22 +111,40 @@ class MathView {
     displayPlaceValueStep(problem) {
         const step = problem.currentStep || 1;
         let displayText = '';
+        let hasInfoIcon = false;
         
         if (step === 1) {
             // Step 1: Add the ones
             displayText = `${this.localization.t('ONES_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.ones1} + ${problem.ones2} = ?`;
         } else if (step === 2) {
-            // Step 2: Add the tens (including carry if any)
+            // Step 2: Identify the carry value
+            hasInfoIcon = problem.carryOver > 0; // Only show info icon if there's a carry
+            const infoIcon = hasInfoIcon ? ` ${this.localization.t('TOOLTIP_ICON')}` : '';
+            displayText = `${this.localization.t('CARRY_STEP')}${infoIcon}\n${problem.num1} + ${problem.num2}\nЕдиници дадоха: ${problem.onesSum}\nПренос = ?`;
+        } else if (step === 3) {
+            // Step 3: Add the tens (including carry if any)
             const tensDisplay = problem.carryOver > 0 
                 ? `Десетици: ${problem.tens1} + ${problem.tens2} + ${problem.carryOver} (пренос) = ?`
                 : `Десетици: ${problem.tens1} + ${problem.tens2} = ?`;
             displayText = `${this.localization.t('TENS_STEP')}\n${problem.num1} + ${problem.num2}\n${tensDisplay}`;
-        } else if (step === 3) {
-            // Step 3: Combine the results
+        } else if (step === 4) {
+            // Step 4: Combine the results
             displayText = `${this.localization.t('COMBINE_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.onesFinal}, Десетици: ${problem.tensFinal}\nРезултат = ?`;
         }
         
+        // Update problem's hasInfoIcon flag
+        problem.hasInfoIcon = hasInfoIcon;
+        
         this.elements.problemDisplay.textContent = displayText;
+        
+        // Update help text if info icon is present
+        if (hasInfoIcon) {
+            this.updateGameInstructions('TOOLTIP_HELP');
+        } else {
+            // Reset to default instructions
+            const instructionKey = this.currentSubject === 'bulgarian' ? 'GAME_INSTRUCTIONS' : 'GAME_INSTRUCTIONS_MATH';
+            this.updateGameInstructions(instructionKey);
+        }
     }
     
     // Update game instructions dynamically
@@ -135,6 +159,47 @@ class MathView {
     updateGameStatus(gameState) {
         this.elements.scoreDisplay.textContent = `${this.localization.t('SCORE')}: ${gameState.score}`;
         this.elements.problemsDisplay.textContent = `${this.localization.t('PROBLEMS')}: ${gameState.problemsSolved}`;
+    }
+    
+    // Show tooltip dialog
+    showTooltip(tooltipKey) {
+        const tooltipText = this.localization.t(tooltipKey);
+        this.elements.terminalMessage.textContent = tooltipText;
+        this.elements.terminalMessage.classList.add('show');
+        this.tooltipVisible = true;
+        this.updateGameInstructions('TOOLTIP_CLOSE');
+    }
+    
+    // Hide tooltip dialog
+    hideTooltip() {
+        this.elements.terminalMessage.classList.remove('show');
+        this.tooltipVisible = false;
+        this.currentTooltips = [];
+        this.currentTooltipIndex = 0;
+        this.updateGameInstructions('TOOLTIP_HELP');
+    }
+    
+    // Check if tooltip is visible
+    isTooltipVisible() {
+        return this.tooltipVisible;
+    }
+    
+    // Cycle to next tooltip or close
+    cycleTooltip(tooltips) {
+        if (this.currentTooltipIndex < tooltips.length) {
+            this.showTooltip(tooltips[this.currentTooltipIndex]);
+            this.currentTooltipIndex++;
+        } else {
+            // All tooltips shown, close the dialog
+            this.hideTooltip();
+        }
+    }
+    
+    // Initialize tooltips for current problem
+    initializeTooltips(tooltips) {
+        this.currentTooltips = tooltips;
+        this.currentTooltipIndex = 0;
+        this.tooltipVisible = false;
     }
     
     // Update breadcrumb navigation

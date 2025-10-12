@@ -54,8 +54,9 @@ class PlaceValueActivity {
                 tensFinal: tensFinal,
                 operation: 'place_value_calculation',
                 answer: finalAnswer,
-                currentStep: 1, // Track which step we're on (1=ones, 2=tens, 3=combine)
-                stepAnswers: [onesSum, tensSum + carryOver, finalAnswer]
+                currentStep: 1, // Track which step we're on (1=ones, 2=carry, 3=tens, 4=combine)
+                stepAnswers: [onesSum, carryOver, tensSum + carryOver, finalAnswer],
+                hasInfoIcon: false // Will be set to true on steps with tooltips
             };
         }
     }
