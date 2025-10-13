@@ -21,6 +21,7 @@ class LocalizationModel {
                 
                 // Operations
                 'ADDITION': 'СЪБИРАНЕ',
+                'PLACE_VALUE': 'ЕДИНИЦИ И ДЕСЕТИЦИ',
                 'SUBTRACTION': 'ИЗВАЖДАНЕ',
                 'MULTIPLICATION': 'УМНОЖЕНИЕ',
                 'DIVISION': 'ДЕЛЕНИЕ',
@@ -42,6 +43,22 @@ class LocalizationModel {
                 'UP_TO_20': 'ДО 20',
                 'UP_TO_50': 'ДО 50',
                 'UP_TO_100': 'ДО 100',
+                
+                // Place Value level descriptions
+                'PLACE_VALUE_RECOGNITION': 'РАЗПОЗНАВАНЕ НА ЕДИНИЦИ И ДЕСЕТИЦИ',
+                'PLACE_VALUE_CALCULATION': 'СТЪПКА ПО СТЪПКА СМЯТАНЕ',
+                'WHICH_DIGIT_ONES': 'Коя цифра е в единиците?',
+                'WHICH_DIGIT_TENS': 'Коя цифра е в десетиците?',
+                'ONES_STEP': 'Първо: събери единиците',
+                'CARRY_STEP': 'Второ: колко е преносът?',
+                'TENS_STEP': 'Трето: събери десетиците',
+                'COMBINE_STEP': 'Четвърто: комбинирай резултата',
+                
+                // Tooltips for Place Value
+                'TOOLTIP_CARRY': 'Преносът е цифрата от десетиците когато сборът на единиците е 10 или повече. Например: 7 + 8 = 15, преносът е 1.',
+                'TOOLTIP_ICON': 'ℹ',
+                'TOOLTIP_HELP': 'Натиснете + за обяснение',
+                'TOOLTIP_CLOSE': 'Натиснете + за затваряне',
                 
                 // Bulgarian Language level descriptions
                 'VOWELS': 'ГЛАСНИ БУКВИ',
@@ -89,6 +106,20 @@ class LocalizationModel {
                     'ВПЕЧАТЛЯВАЩА РАБОТА С МИНУС!',
                     'ИЗКЛЮЧИТЕЛНО ИЗВАЖДАНЕ!',
                     'НЕВЕРОЯТНИ УМЕНИЯ ЗА ИЗВАЖДАНЕ!'
+                ],
+                
+                // Place Value reward messages
+                'PLACE_VALUE_REWARD_MESSAGES': [
+                    'ОТЛИЧНО! ПОЗНАВАШ ЕДИНИЦИТЕ И ДЕСЕТИЦИТЕ!',
+                    'ПЕРФЕКТНО РАЗБИРАНЕ!',
+                    'НЕВЕРОЯТНА РАБОТА!',
+                    'БЛЕСТЯЩО ПОЗНАВАНЕ НА ПОЗИЦИИТЕ!',
+                    'ПРЕВЪЗХОДНО!',
+                    'БЕЗУПРЕЧНО РАЗПОЗНАВАНЕ!',
+                    'ВЕЛИКОЛЕПНА РАБОТА!',
+                    'ВПЕЧАТЛЯВАЩО!',
+                    'ИЗКЛЮЧИТЕЛНО!',
+                    'ЧУДЕСНО РАЗБИРАНЕ НА ЧИСЛАТА!'
                 ],
                 
                 // Bulgarian Language reward messages
