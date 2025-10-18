@@ -7,7 +7,7 @@ The Math Practice App is built using the Model-View-Controller (MVC) architectur
 ## Directory Structure
 
 ```
-math/
+lumi/
 ├── css/
 │   ├── base.css                 # Theme-independent base styles
 │   └── themes/
@@ -15,9 +15,24 @@ math/
 │       └── retro-amber.css      # Alternative amber theme
 ├── js/
 │   ├── models/
-│   │   ├── MathModel.js         # Core data and business logic
-│   │   └── extensions/
-│   │       └── SubtractionLevels.js  # Example extension
+│   │   ├── core/
+│   │   │   ├── LocalizationModel.js   # Localization system
+│   │   │   └── SubjectManager.js      # Subject management
+│   │   └── subjects/
+│   │       ├── math/
+│   │       │   ├── MathModel.js       # Math-specific model
+│   │       │   ├── OperationManager.js # Math operations manager
+│   │       │   └── activities/
+│   │       │       ├── AdditionLevels.js
+│   │       │       ├── SubtractionLevels.js
+│   │       │       └── PlaceValueActivity.js
+│   │       └── bulgarian/
+│   │           ├── BulgarianLanguageModel.js
+│   │           ├── BulgarianActivityManager.js
+│   │           └── activities/
+│   │               ├── LettersActivity.js
+│   │               ├── SyllablesActivity.js
+│   │               └── WordsActivity.js
 │   ├── views/
 │   │   └── AppView.js           # UI rendering and DOM manipulation
 │   ├── controllers/

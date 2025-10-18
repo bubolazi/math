@@ -55,11 +55,22 @@ Then open `http://localhost:8000` in your browser.
 ## File Structure
 
 ```
-math/
-├── index.html      # Main HTML structure
-├── styles.css      # Green monochrome theme and responsive design
-├── script.js       # Application logic and game mechanics
-└── README.md       # This documentation
+lumi/
+├── index.html           # Main HTML structure
+├── css/                 # Stylesheets
+│   ├── base.css        # Theme-independent styles
+│   └── themes/         # Theme-specific styles
+├── js/                  # Application code
+│   ├── app.js          # Application entry point
+│   ├── models/         # Data and business logic
+│   │   ├── core/       # Core models (localization, subject management)
+│   │   └── subjects/   # Subject-specific models and activities
+│   │       ├── math/
+│   │       └── bulgarian/
+│   ├── views/          # UI rendering
+│   └── controllers/    # Application flow coordination
+├── tests/               # Test suite
+└── docs/                # Documentation
 ```
 
 ## Technical Details
