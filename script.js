@@ -1,5 +1,5 @@
-// Terminal Math Practice App for Preschool Children
-class TerminalMathApp {
+// Terminal Learning App for Preschool Children
+class TerminalLumiApp {
     constructor() {
         this.currentLevel = 1;
         this.currentOperation = 'addition';
@@ -219,5 +219,5 @@ class TerminalMathApp {
 
 // Initialize the app when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    new TerminalMathApp();
+    new TerminalLumiApp();
 });
