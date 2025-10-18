@@ -139,7 +139,7 @@ A comprehensive plan for adding visual badges has been documented in `docs/refac
 
 **Current System**: Text-based badges only
 - Trigger: Every 5 correct answers
-- Content: Random adjective + animal (e.g., "Ти си умна лисица!")
+- Content: Random adjective + animal (e.g., "Ти си умна лисица!" / "You are a smart fox!")
 - Display: Message overlay
 
 **Proposed Approach**: Phased implementation
@@ -163,7 +163,7 @@ A comprehensive plan for adding visual badges has been documented in `docs/refac
 
 **Minimal Quick Win Implementation**:
 For immediate impact, start with:
-1. Define 4 milestone badges (🌱 Beginner, 📚 Learner, ⭐ Expert, 🏆 Master)
+1. Define 4 milestone badges (Beginner 🌱, Learner 📚, Expert ⭐, Master 🏆)
 2. Award based on total problems solved (5, 10, 20, 50)
 3. Display with larger icon and special styling
 4. Keep existing text badges for every-5 rewards
