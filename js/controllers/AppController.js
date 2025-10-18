@@ -1,10 +1,10 @@
 // Controller: Coordinates between Model and View
-class MathController {
+class AppController {
     constructor(localization, subjectManager) {
         this.localization = localization;
         this.subjectManager = subjectManager;
         this.activityManager = null; // Will be set after subject selection
-        this.view = new MathView(localization);
+        this.view = new AppView(localization);
         this.model = null; // Will be initialized after operation/activity selection
         this.currentSubject = null; // Track current subject
         this.currentActivity = null; // Track current activity

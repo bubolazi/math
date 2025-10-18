@@ -19,9 +19,9 @@ math/
 │   │   └── extensions/
 │   │       └── SubtractionLevels.js  # Example extension
 │   ├── views/
-│   │   └── MathView.js          # UI rendering and DOM manipulation
+│   │   └── AppView.js           # UI rendering and DOM manipulation
 │   ├── controllers/
-│   │   └── MathController.js    # Coordinates Model and View
+│   │   └── AppController.js     # Coordinates Model and View
 │   └── app.js                   # Application entry point
 ├── docs/
 │   └── MVC-ARCHITECTURE.md      # This documentation
@@ -44,7 +44,7 @@ math/
 - `updateScore()` - Updates game statistics
 - `getGameState()` - Returns current state
 
-### View (`js/views/MathView.js`)
+### View (`js/views/AppView.js`)
 **Responsibility**: UI rendering and DOM manipulation
 - Manages screen transitions
 - Displays problems and feedback
@@ -58,7 +58,7 @@ math/
 - `updateGameStatus(gameState)` - Updates UI elements
 - `showMessage(message)` - Displays feedback
 
-### Controller (`js/controllers/MathController.js`)
+### Controller (`js/controllers/AppController.js`)
 **Responsibility**: Coordinates Model and View
 - Handles user interactions
 - Manages application flow
