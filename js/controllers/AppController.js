@@ -90,7 +90,14 @@ class AppController {
     
     selectOperation(operationName) {
         this.currentActivity = operationName;
-        this.navigationStack.push('activity');
+        
+        // Only push 'activity' if it's not already on the stack
+        const topOfStack = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        if (topOfStack !== 'activity') {
+            this.navigationStack.push('activity');
+        }
         
         // Get the operation extension
         const operationExtension = this.activityManager.getOperationExtension(operationName);
@@ -130,7 +137,13 @@ class AppController {
     }
     
     initializeLevelSelection() {
-        this.navigationStack.push('level_select');
+        // Only push 'level_select' if it's not already on the stack
+        const topOfStack = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        if (topOfStack !== 'level_select') {
+            this.navigationStack.push('level_select');
+        }
         
         // Render level list for the selected operation
         this.view.renderLevelList(this.model.getLocalizedLevels());
@@ -161,7 +174,14 @@ class AppController {
         }
         
         this.currentLevel = level;
-        this.navigationStack.push('game');
+        
+        // Only push 'game' if it's not already on the stack
+        const topOfStack = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        if (topOfStack !== 'game') {
+            this.navigationStack.push('game');
+        }
         
         // Unbind keyboard selections when entering game screen
         this.view.unbindKeyboardSelections();
@@ -459,13 +479,13 @@ class AppController {
             // Go back to level selection - don't push to stack again
             this.showLevelSelection();
         } else if (previousState === 'activity') {
-            // Go back to operation/activity selection
-            this.initializeOperationSelection();
+            // Go back to operation/activity selection - don't modify stack
+            this.showOperationSelection();
         } else if (previousState === 'subject') {
-            // Go back to subject selection
-            this.initializeSubjectSelection();
+            // Go back to subject selection - don't modify stack
+            this.showSubjectSelection();
         } else {
-            // Default: go back to subject selection
+            // No more history - go back to subject selection and reset
             this.initializeSubjectSelection();
         }
     }
@@ -500,5 +520,56 @@ class AppController {
         ]);
         
         this.view.updateGameStatus(this.model.getGameState());
+    }
+    
+    // Show operation/activity selection without modifying navigation stack
+    showOperationSelection() {
+        // Show operation selection screen
+        this.view.showScreen('operation-select');
+        
+        // Render available operations/activities
+        this.view.renderOperationList(this.activityManager.getAvailableOperations(), this.localization);
+        
+        // Unbind any previous keyboard selections
+        this.view.unbindKeyboardSelections();
+        
+        // Bind operation selection event
+        this.view.bindOperationSelection((operation) => {
+            this.selectOperation(operation);
+        });
+        
+        // Bind keyboard selection
+        this.view.bindOperationKeyboardSelection((operation) => {
+            this.selectOperation(operation);
+        });
+        
+        // Update breadcrumb
+        const subjectKey = this.subjectManager.getSubjectKey(this.currentSubject);
+        this.view.updateBreadcrumb([this.localization.t(subjectKey)]);
+    }
+    
+    // Show subject selection without modifying navigation stack
+    showSubjectSelection() {
+        // Show subject selection screen
+        this.view.showScreen('subject-select');
+        
+        // Render available subjects
+        this.view.renderSubjectList(this.subjectManager.getAvailableSubjects(), this.localization);
+        
+        // Unbind any previous keyboard selections
+        this.view.unbindKeyboardSelections();
+        
+        // Bind subject selection event
+        this.view.bindSubjectSelection((subject) => {
+            this.selectSubject(subject);
+        });
+        
+        // Bind keyboard selection
+        this.view.bindSubjectKeyboardSelection((subject) => {
+            this.selectSubject(subject);
+        });
+        
+        // Update breadcrumb (empty at subject level)
+        this.view.updateBreadcrumb([]);
     }
 }
