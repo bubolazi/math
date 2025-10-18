@@ -60,6 +60,25 @@ header h1 {
     text-shadow: 0 0 10px var(--terminal-green);
 }
 
+/* Multi-step calculation colors */
+.calculation-history {
+    color: var(--dim-green);
+}
+
+.history-step.completed {
+    color: var(--terminal-green);
+}
+
+.current-step-display {
+    color: var(--terminal-green);
+}
+
+.current-step-display .step-label {
+    color: var(--dim-green);
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
 .input-line {
     color: var(--terminal-green);
 }

@@ -53,6 +53,10 @@ class LocalizationModel {
                 'CARRY_STEP': 'Второ: колко е преносът?',
                 'TENS_STEP': 'Трето: събери десетиците',
                 'COMBINE_STEP': 'Четвърто: комбинирай резултата',
+                'STEP_ONES': 'Единици',
+                'STEP_CARRY': 'Пренос',
+                'STEP_TENS': 'Десетици',
+                'STEP_COMBINE': 'Резултат',
                 
                 // Tooltips for Place Value
                 'TOOLTIP_CARRY': 'Преносът е цифрата от десетиците когато сборът на единиците е 10 или повече. Например: 7 + 8 = 15, преносът е 1.',
