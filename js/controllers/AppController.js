@@ -14,6 +14,16 @@ class AppController {
         this.initializeSubjectSelection();
     }
     
+    // Helper method to push state to navigation stack only if not already on top
+    pushToStackIfNotPresent(state) {
+        const topOfStack = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        if (topOfStack !== state) {
+            this.navigationStack.push(state);
+        }
+    }
+    
     initializeSubjectSelection() {
         this.currentSubject = null;
         this.currentActivity = null;
@@ -92,12 +102,7 @@ class AppController {
         this.currentActivity = operationName;
         
         // Only push 'activity' if it's not already on the stack
-        const topOfStack = this.navigationStack.length > 0 
-            ? this.navigationStack[this.navigationStack.length - 1] 
-            : null;
-        if (topOfStack !== 'activity') {
-            this.navigationStack.push('activity');
-        }
+        this.pushToStackIfNotPresent('activity');
         
         // Get the operation extension
         const operationExtension = this.activityManager.getOperationExtension(operationName);
@@ -138,12 +143,7 @@ class AppController {
     
     initializeLevelSelection() {
         // Only push 'level_select' if it's not already on the stack
-        const topOfStack = this.navigationStack.length > 0 
-            ? this.navigationStack[this.navigationStack.length - 1] 
-            : null;
-        if (topOfStack !== 'level_select') {
-            this.navigationStack.push('level_select');
-        }
+        this.pushToStackIfNotPresent('level_select');
         
         // Render level list for the selected operation
         this.view.renderLevelList(this.model.getLocalizedLevels());
@@ -176,12 +176,7 @@ class AppController {
         this.currentLevel = level;
         
         // Only push 'game' if it's not already on the stack
-        const topOfStack = this.navigationStack.length > 0 
-            ? this.navigationStack[this.navigationStack.length - 1] 
-            : null;
-        if (topOfStack !== 'game') {
-            this.navigationStack.push('game');
-        }
+        this.pushToStackIfNotPresent('game');
         
         // Unbind keyboard selections when entering game screen
         this.view.unbindKeyboardSelections();
@@ -488,6 +483,8 @@ class AppController {
             // No more history - go back to subject selection and reset
             this.initializeSubjectSelection();
         }
+        
+        return previousState;
     }
     
     // Show level selection without modifying navigation stack
