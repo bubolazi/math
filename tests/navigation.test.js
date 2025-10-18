@@ -26,7 +26,14 @@ class MockController {
     
     selectOperation(operationName) {
         this.currentActivity = operationName;
-        this.navigationStack.push('activity');
+        
+        // Only push 'activity' if it's not already on the stack
+        const topOfStack = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        if (topOfStack !== 'activity') {
+            this.navigationStack.push('activity');
+        }
         
         const operationExtension = this.activityManager.getOperationExtension(operationName);
         
@@ -51,12 +58,26 @@ class MockController {
     }
     
     initializeLevelSelection() {
-        this.navigationStack.push('level_select');
+        // Only push 'level_select' if it's not already on the stack
+        const topOfStack = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        if (topOfStack !== 'level_select') {
+            this.navigationStack.push('level_select');
+        }
     }
     
     startLevel(level, operation) {
         this.currentLevel = level;
-        this.navigationStack.push('game');
+        
+        // Only push 'game' if it's not already on the stack
+        const topOfStack = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        if (topOfStack !== 'game') {
+            this.navigationStack.push('game');
+        }
+        
         this.model.setLevel(level, operation);
     }
     
@@ -277,5 +298,93 @@ describe('Navigation - State Preservation After Back Navigation', () => {
         problem = controller.model.generateProblem();
         expectedAnswer = problem.num1 + problem.num2;
         expect(problem.answer).toBe(expectedAnswer);
+    });
+});
+
+describe('Navigation - Backspace Bug Fix', () => {
+    let controller;
+
+    beforeEach(() => {
+        controller = new MockController();
+    });
+
+    test('Backspace navigates step by step, not directly to first screen', () => {
+        // Navigate through all screens
+        controller.selectSubject('math');
+        expect(controller.navigationStack).toEqual(['subject']);
+        
+        controller.selectOperation('addition');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        
+        controller.startLevel(1, 'addition');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select', 'game']);
+        
+        // Press backspace from game - should go to level_select
+        let previousState = controller.navigateBack();
+        expect(previousState).toBe('level_select');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        
+        // Press backspace from level_select - should go to activity
+        previousState = controller.navigateBack();
+        expect(previousState).toBe('activity');
+        expect(controller.navigationStack).toEqual(['subject', 'activity']);
+        
+        // Press backspace from activity - should go to subject (NOT to empty/first screen)
+        previousState = controller.navigateBack();
+        expect(previousState).toBe('subject');
+        expect(controller.navigationStack).toEqual(['subject']);
+        
+        // Press backspace from subject - should stay at subject or reset
+        previousState = controller.navigateBack();
+        expect(previousState).toBeNull(); // No more history
+        expect(controller.navigationStack).toEqual([]);
+    });
+
+    test('Backspace preserves navigation state in Bulgarian activities', () => {
+        // Navigate through Bulgarian activity
+        controller.selectSubject('bulgarian');
+        expect(controller.navigationStack).toEqual(['subject']);
+        
+        controller.selectOperation('letters');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        
+        controller.startLevel(1, 'letters');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select', 'game']);
+        
+        // Navigate back step by step
+        controller.navigateBack(); // to level_select
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        
+        controller.navigateBack(); // to activity
+        expect(controller.navigationStack).toEqual(['subject', 'activity']);
+        
+        controller.navigateBack(); // to subject
+        expect(controller.navigationStack).toEqual(['subject']);
+    });
+
+    test('Navigation stack remains consistent after multiple back-and-forth navigations', () => {
+        // First journey
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.startLevel(1, 'addition');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select', 'game']);
+        
+        // Go back two steps
+        controller.navigateBack(); // to level_select
+        controller.navigateBack(); // to activity
+        expect(controller.navigationStack).toEqual(['subject', 'activity']);
+        
+        // Go forward again
+        controller.selectOperation('subtraction');
+        controller.startLevel(2, 'subtraction');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select', 'game']);
+        
+        // Go back three steps
+        controller.navigateBack(); // to level_select
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        controller.navigateBack(); // to activity
+        expect(controller.navigationStack).toEqual(['subject', 'activity']);
+        controller.navigateBack(); // to subject
+        expect(controller.navigationStack).toEqual(['subject']);
     });
 });
