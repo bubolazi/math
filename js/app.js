@@ -1,5 +1,5 @@
 // Application Entry Point - MVC Initialization with Subject Selection
-class MathApp {
+class LumiApp {
     constructor() {
         this.init();
     }
@@ -29,11 +29,11 @@ class MathApp {
         this.controller = controller;
         
         // Make app instance available globally for debugging
-        window.mathApp = this;
+        window.lumiApp = this;
         
         console.log('Learning App initialized with MVC architecture, Bulgarian localization, and subject selection');
     }
 }
 
 // Initialize the application
-new MathApp();
+new LumiApp();

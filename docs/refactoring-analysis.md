@@ -5,9 +5,9 @@ This document provides comprehensive analysis for the refactoring tasks outlined
 ## Task 1: Rename MathController and MathView to AppController and AppView
 
 ### Current State
-- `MathController` manages the entire application flow, not just math operations
+- `MathController` manages the entire application flow for all subjects
 - `MathView` handles UI rendering for all subjects (Math, Bulgarian Language, etc.)
-- These names are misleading as they suggest math-only functionality
+- These names are misleading as they suggest math-specific functionality when they actually manage the entire application
 
 ### Recommendation
 ✅ **RENAME RECOMMENDED**: The files should be renamed to `AppController` and `AppView` to accurately reflect their role as application-level components managing all subjects.

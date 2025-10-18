@@ -16,7 +16,7 @@ js/views/                        js/views/
                                    (renamed to reflect app-level role)
 ```
 
-**Why?** The original names suggested math-only functionality, but these components actually manage the entire application including all subjects (Math, Bulgarian, etc.).
+**Why?** The original names suggested math-specific functionality, but these components actually manage the entire application including all subjects (Math, Bulgarian, etc.).
 
 ---
 
