@@ -51,14 +51,30 @@
 
             <div id="game-screen" class="screen">
                 <div class="terminal-display">
-                    <div class="problem-display" id="problem-display">
-                        5 + 3 = ?
+                    <div class="calculation-container" id="calculation-container" style="display: none;">
+                        <div class="calculation-history" id="calculation-history"></div>
+                        <div class="current-step-display">
+                            <div class="problem-display compact" id="problem-display-compact">
+                                5 + 3 = ?
+                            </div>
+                            <div class="input-line">
+                                <span class="input-prompt">></span>
+                                <input type="number" id="terminal-input" autocomplete="off">
+                                <span class="cursor"></span>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div class="input-line">
-                        <span class="input-prompt">></span>
-                        <input type="number" id="terminal-input" autocomplete="off">
-                        <span class="cursor"></span>
+                    <div class="standard-display" id="standard-display">
+                        <div class="problem-display" id="problem-display">
+                            5 + 3 = ?
+                        </div>
+                        
+                        <div class="input-line">
+                            <span class="input-prompt">></span>
+                            <input type="number" id="terminal-input" autocomplete="off">
+                            <span class="cursor"></span>
+                        </div>
                     </div>
                 </div>
                 
