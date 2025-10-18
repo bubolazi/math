@@ -1,6 +1,6 @@
 # Learning Practice for Kids
 
-A beautiful, kid-friendly web application for preschool children to practice basic math operations. Features a green monochrome theme and progressive difficulty levels.
+A beautiful, kid-friendly web application for preschool children to learn and practice various subjects including math and language. Features a green monochrome theme and progressive difficulty levels.
 
 ## Features
 
@@ -26,7 +26,8 @@ A beautiful, kid-friendly web application for preschool children to practice bas
 
 ### 🚀 Easy to Extend
 The application is built with a modular architecture that makes it easy to add:
-- New math operations (subtraction, multiplication, division)
+- New subjects (e.g., science, history)
+- Additional activities within subjects
 - Additional difficulty levels
 - Different UI themes
 - More reward types
@@ -135,9 +136,9 @@ lumi/
 ## Future Enhancements
 
 The application is designed to easily support:
-- Subtraction operations
-- Multiplication tables
-- Division problems
+- Additional math operations (multiplication, division)
+- More language subjects
+- Science and other subjects
 - Different UI themes
 - Sound effects
 - Progress tracking

@@ -1,7 +1,7 @@
 {
   "name": "lumi",
   "version": "1.0.0",
-  "description": "A beautiful, kid-friendly web application for preschool children to practice basic math operations. Features a green monochrome theme and progressive difficulty levels.",
+  "description": "A beautiful, kid-friendly web application for preschool children to learn and practice various subjects including math and language. Features a green monochrome theme and progressive difficulty levels.",
   "main": "script.js",
   "directories": {
     "doc": "docs"

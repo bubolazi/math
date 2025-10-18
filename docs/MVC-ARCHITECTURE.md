@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Math Practice App is built using the Model-View-Controller (MVC) architectural pattern, providing clear separation of concerns and easy extensibility.
+The Lumi App is built using the Model-View-Controller (MVC) architectural pattern, providing clear separation of concerns and easy extensibility.
 
 ## Directory Structure
 
@@ -46,7 +46,7 @@ lumi/
 ## Components
 
 ### Model (`js/models/MathModel.js`)
-**Responsibility**: Data management and business logic
+**Responsibility**: Data management and business logic for math activities
 - Stores game state (level, score, problems)
 - Generates math problems
 - Validates answers
@@ -64,12 +64,12 @@ lumi/
 - Manages screen transitions
 - Displays problems and feedback
 - Handles input focus and cursor
-- Renders level lists dynamically
+- Renders activity and level lists dynamically
 - Shows/hides messages
 
 **Key Methods**:
 - `showScreen(screenId)` - Switches between screens
-- `displayProblem(problem)` - Shows math problems
+- `displayProblem(problem)` - Shows problems/questions
 - `updateGameStatus(gameState)` - Updates UI elements
 - `showMessage(message)` - Displays feedback
 
@@ -83,7 +83,7 @@ lumi/
 **Key Methods**:
 - `startLevel(level, operation)` - Initiates new level
 - `checkAnswer()` - Processes user answers
-- `generateNewProblem()` - Creates and displays problems
+- `generateNewProblem()` - Creates and displays new problems
 
 ## Easy Theme Switching
 
@@ -109,9 +109,9 @@ lumi/
 
 ## Adding New Levels and Operations
 
-### Adding New Levels to Existing Operations
+### Adding New Levels to Existing Activities
 
-1. Edit `js/models/MathModel.js`
+1. Edit the appropriate model file (e.g., `js/models/subjects/math/MathModel.js`)
 2. Add new level to the `levels` object:
 
 ```javascript
@@ -121,16 +121,16 @@ this.levels = {
 };
 ```
 
-### Adding New Operations (e.g., Subtraction)
+### Adding New Operations (e.g., Multiplication)
 
-1. Create extension file: `js/models/extensions/SubtractionLevels.js`
+1. Create extension file: `js/models/subjects/math/activities/MultiplicationLevels.js`
 2. Extend the MathModel in the constructor:
 
 ```javascript
 // In MathModel constructor
 this.operations = {
     addition: this.levels,
-    subtraction: SubtractionLevels.getLevels()
+    multiplication: MultiplicationLevels.getLevels()
 };
 ```
 
@@ -139,7 +139,7 @@ this.operations = {
 
 ### Extension Example
 
-See `js/models/extensions/SubtractionLevels.js` for a complete example of adding subtraction operations.
+See `js/models/subjects/math/activities/SubtractionLevels.js` for a complete example of adding operations.
 
 ## Benefits of MVC Architecture
 
@@ -190,7 +190,7 @@ this.levels = {
 
 ### Creating a New Operation
 ```javascript
-// Create new file: js/models/extensions/MultiplicationLevels.js
+// Create new file: js/models/subjects/math/activities/MultiplicationLevels.js
 class MultiplicationLevels {
     static getLevels() {
         return {
