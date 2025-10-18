@@ -48,6 +48,10 @@ bower_components/
 
 # Coverage directory used by tools like istanbul
 coverage/
+*.lcov
+
+# Test artifacts
+.nyc_output/
 
 # Browser testing
 selenium-debug.log

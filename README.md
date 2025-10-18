@@ -64,10 +64,62 @@ math/
 
 ## Technical Details
 
-- **Pure JavaScript**: No external dependencies
+- **Pure JavaScript**: No external dependencies for the app itself
 - **Responsive Design**: Works on desktop, tablet, and mobile
 - **Accessible**: Clean semantic HTML structure
 - **Modular Code**: Easy to maintain and extend
+- **Automated Testing**: Comprehensive test suite with Jest
+- **CI/CD**: Automated testing on every commit
+
+## Testing
+
+The application includes a comprehensive test suite with 38 automated tests covering:
+- Math operations (addition, subtraction, place value)
+- Bulgarian language activities (letters, syllables, words)
+- Navigation and state management
+
+```bash
+# Run tests
+npm test
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+See [tests/README.md](tests/README.md) for detailed testing documentation.
+
+## Development
+
+### Setup
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+```
+
+### Project Structure
+```
+lumi/
+├── index.html           # Main HTML entry point
+├── css/                 # Stylesheets
+│   ├── base.css        # Base styles
+│   └── themes/         # Theme-specific styles
+├── js/                  # JavaScript source
+│   ├── app.js          # Application entry point
+│   ├── controllers/    # MVC Controllers
+│   ├── models/         # MVC Models
+│   │   └── extensions/ # Activity/Operation extensions
+│   └── views/          # MVC Views
+└── tests/              # Test suite
+    ├── README.md       # Testing documentation
+    ├── setup.js        # Test configuration
+    └── *.test.js       # Test files
+```
 
 ## Future Enhancements
 

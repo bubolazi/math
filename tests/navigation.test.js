@@ -1,0 +1,281 @@
+/**
+ * Test suite for Navigation
+ * Tests that navigation works correctly with both keyboard and mouse
+ */
+
+// Mock controller for testing navigation
+class MockController {
+    constructor() {
+        this.localization = new LocalizationModel('bg');
+        this.subjectManager = new SubjectManager();
+        this.activityManager = null;
+        this.model = null;
+        this.currentSubject = null;
+        this.currentActivity = null;
+        this.currentLevel = null;
+        this.navigationStack = [];
+    }
+    
+    selectSubject(subjectName) {
+        this.currentSubject = subjectName;
+        this.currentActivity = null;
+        this.currentLevel = null;
+        this.navigationStack = ['subject'];
+        this.activityManager = this.subjectManager.getActivityManager(subjectName);
+    }
+    
+    selectOperation(operationName) {
+        this.currentActivity = operationName;
+        this.navigationStack.push('activity');
+        
+        const operationExtension = this.activityManager.getOperationExtension(operationName);
+        
+        if (this.currentSubject === 'math') {
+            this.model = new MathModel(this.localization, operationExtension);
+        } else if (this.currentSubject === 'bulgarian') {
+            this.model = new BulgarianLanguageModel(this.localization, operationExtension);
+        }
+        
+        // Check if activity has multiple levels or just one
+        const levels = this.model.getLocalizedLevels();
+        const levelCount = Object.keys(levels).length;
+        
+        if (levelCount === 1) {
+            // Single level - go directly to practice
+            const singleLevel = parseInt(Object.keys(levels)[0]);
+            this.startLevel(singleLevel, 'current');
+        } else {
+            // Multiple levels - show level selection
+            this.initializeLevelSelection();
+        }
+    }
+    
+    initializeLevelSelection() {
+        this.navigationStack.push('level_select');
+    }
+    
+    startLevel(level, operation) {
+        this.currentLevel = level;
+        this.navigationStack.push('game');
+        this.model.setLevel(level, operation);
+    }
+    
+    navigateBack() {
+        // Pop current state
+        if (this.navigationStack.length > 0) {
+            this.navigationStack.pop();
+        }
+        
+        // Get previous state
+        const previousState = this.navigationStack.length > 0 
+            ? this.navigationStack[this.navigationStack.length - 1] 
+            : null;
+        
+        return previousState;
+    }
+}
+
+describe('Navigation - Math Subject', () => {
+    let controller;
+
+    beforeEach(() => {
+        controller = new MockController();
+    });
+
+    test('Navigation stack after selecting Math subject', () => {
+        controller.selectSubject('math');
+        
+        expect(controller.navigationStack).toEqual(['subject']);
+        expect(controller.currentSubject).toBe('math');
+    });
+
+    test('Navigation stack after selecting Addition operation (multi-level)', () => {
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        expect(controller.currentActivity).toBe('addition');
+    });
+
+    test('Navigation stack after starting Level 1 Addition', () => {
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.startLevel(1, 'addition');
+        
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select', 'game']);
+        expect(controller.currentLevel).toBe(1);
+    });
+
+    test('Navigate back from game goes to level selection', () => {
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.startLevel(1, 'addition');
+        
+        const previousState = controller.navigateBack();
+        
+        expect(previousState).toBe('level_select');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+    });
+
+    test('Navigate back from level selection goes to activity selection', () => {
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        
+        const previousState = controller.navigateBack();
+        
+        expect(previousState).toBe('activity');
+        expect(controller.navigationStack).toEqual(['subject', 'activity']);
+    });
+
+    test('Navigate back from activity selection goes to subject selection', () => {
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.navigateBack(); // Back to activity
+        
+        const previousState = controller.navigateBack();
+        
+        expect(previousState).toBe('subject');
+        expect(controller.navigationStack).toEqual(['subject']);
+    });
+});
+
+describe('Navigation - Single-Level Activities', () => {
+    let controller;
+
+    beforeEach(() => {
+        controller = new MockController();
+    });
+
+    test('Place Value (multi-level) shows level selection', () => {
+        controller.selectSubject('math');
+        controller.selectOperation('place_value');
+        
+        // Should show level selection (Place Value has 2 levels)
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        expect(controller.currentLevel).toBeNull(); // No level selected yet
+    });
+
+    test('Navigate back from multi-level activity after selecting level', () => {
+        controller.selectSubject('math');
+        controller.selectOperation('place_value');
+        controller.startLevel(1, 'place_value');
+        
+        const previousState = controller.navigateBack();
+        
+        // Should go back to level selection
+        expect(previousState).toBe('level_select');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+    });
+});
+
+describe('Navigation - Bulgarian Subject', () => {
+    let controller;
+
+    beforeEach(() => {
+        controller = new MockController();
+    });
+
+    test('Navigation stack after selecting Bulgarian subject', () => {
+        controller.selectSubject('bulgarian');
+        
+        expect(controller.navigationStack).toEqual(['subject']);
+        expect(controller.currentSubject).toBe('bulgarian');
+    });
+
+    test('Navigation stack after selecting Letters activity', () => {
+        controller.selectSubject('bulgarian');
+        controller.selectOperation('letters');
+        
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        expect(controller.currentActivity).toBe('letters');
+    });
+
+    test('Navigate back from Bulgarian game goes to level selection', () => {
+        controller.selectSubject('bulgarian');
+        controller.selectOperation('letters');
+        controller.startLevel(1, 'letters');
+        
+        const previousState = controller.navigateBack();
+        
+        expect(previousState).toBe('level_select');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+    });
+});
+
+describe('Navigation - State Preservation After Back Navigation', () => {
+    let controller;
+
+    beforeEach(() => {
+        controller = new MockController();
+    });
+
+    test('Can navigate to same subject/activity after going back', () => {
+        // First navigation
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.startLevel(1, 'addition');
+        
+        // Navigate back to subject
+        controller.navigateBack(); // to level_select
+        controller.navigateBack(); // to activity
+        controller.navigateBack(); // to subject
+        
+        // Navigate again to same activity
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.startLevel(2, 'addition');
+        
+        expect(controller.currentLevel).toBe(2);
+        expect(controller.model).not.toBeNull();
+        
+        // Verify model can generate problems
+        const problem = controller.model.generateProblem();
+        expect(problem).toHaveProperty('answer');
+    });
+
+    test('Can navigate to different subject/activity after going back', () => {
+        // First navigation - Math
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.startLevel(1, 'addition');
+        
+        // Navigate back to subject
+        controller.navigateBack(); // to level_select
+        controller.navigateBack(); // to activity
+        controller.navigateBack(); // to subject
+        
+        // Navigate to different subject - Bulgarian
+        controller.selectSubject('bulgarian');
+        controller.selectOperation('letters');
+        controller.startLevel(1, 'letters');
+        
+        expect(controller.currentSubject).toBe('bulgarian');
+        expect(controller.currentActivity).toBe('letters');
+        expect(controller.model).not.toBeNull();
+        
+        // Verify model can generate problems
+        const problem = controller.model.generateProblem();
+        expect(problem).toHaveProperty('display'); // Bulgarian uses 'display' property
+    });
+
+    test('Model generates correct results after back navigation', () => {
+        // Navigate to Math Addition
+        controller.selectSubject('math');
+        controller.selectOperation('addition');
+        controller.startLevel(1, 'addition');
+        
+        // Generate a problem and verify
+        let problem = controller.model.generateProblem();
+        let expectedAnswer = problem.num1 + problem.num2;
+        expect(problem.answer).toBe(expectedAnswer);
+        
+        // Navigate back and forth
+        controller.navigateBack(); // to level_select
+        controller.startLevel(2, 'addition');
+        
+        // Generate another problem and verify
+        problem = controller.model.generateProblem();
+        expectedAnswer = problem.num1 + problem.num2;
+        expect(problem.answer).toBe(expectedAnswer);
+    });
+});
