@@ -77,28 +77,27 @@
     </div>
 
     <!-- MVC Architecture with Localization and Subject/Activity Management -->
-    <script src="js/models/LocalizationModel.js"></script>
+    <!-- Core Models -->
+    <script src="js/models/core/LocalizationModel.js"></script>
+    <script src="js/models/core/SubjectManager.js"></script>
     
-    <!-- Math subject extensions -->
-    <script src="js/models/extensions/AdditionLevels.js"></script>
-    <script src="js/models/extensions/PlaceValueActivity.js"></script>
-    <script src="js/models/extensions/SubtractionLevels.js"></script>
-    <script src="js/models/OperationManager.js"></script>
-    <script src="js/models/MathModel.js"></script>
+    <!-- Math Subject -->
+    <script src="js/models/subjects/math/activities/AdditionLevels.js"></script>
+    <script src="js/models/subjects/math/activities/PlaceValueActivity.js"></script>
+    <script src="js/models/subjects/math/activities/SubtractionLevels.js"></script>
+    <script src="js/models/subjects/math/OperationManager.js"></script>
+    <script src="js/models/subjects/math/MathModel.js"></script>
     
-    <!-- Bulgarian Language subject extensions -->
-    <script src="js/models/extensions/LettersActivity.js"></script>
-    <script src="js/models/extensions/SyllablesActivity.js"></script>
-    <script src="js/models/extensions/WordsActivity.js"></script>
-    <script src="js/models/BulgarianActivityManager.js"></script>
-    <script src="js/models/BulgarianLanguageModel.js"></script>
-    
-    <!-- Subject Manager -->
-    <script src="js/models/SubjectManager.js"></script>
+    <!-- Bulgarian Language Subject -->
+    <script src="js/models/subjects/bulgarian/activities/LettersActivity.js"></script>
+    <script src="js/models/subjects/bulgarian/activities/SyllablesActivity.js"></script>
+    <script src="js/models/subjects/bulgarian/activities/WordsActivity.js"></script>
+    <script src="js/models/subjects/bulgarian/BulgarianActivityManager.js"></script>
+    <script src="js/models/subjects/bulgarian/BulgarianLanguageModel.js"></script>
     
     <!-- View and Controller -->
-    <script src="js/views/MathView.js"></script>
-    <script src="js/controllers/MathController.js"></script>
+    <script src="js/views/AppView.js"></script>
+    <script src="js/controllers/AppController.js"></script>
     <script src="js/app.js"></script>
 </body>
 </html>

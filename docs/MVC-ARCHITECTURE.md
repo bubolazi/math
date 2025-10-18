@@ -7,7 +7,7 @@ The Math Practice App is built using the Model-View-Controller (MVC) architectur
 ## Directory Structure
 
 ```
-math/
+lumi/
 ├── css/
 │   ├── base.css                 # Theme-independent base styles
 │   └── themes/
@@ -15,13 +15,28 @@ math/
 │       └── retro-amber.css      # Alternative amber theme
 ├── js/
 │   ├── models/
-│   │   ├── MathModel.js         # Core data and business logic
-│   │   └── extensions/
-│   │       └── SubtractionLevels.js  # Example extension
+│   │   ├── core/
+│   │   │   ├── LocalizationModel.js   # Localization system
+│   │   │   └── SubjectManager.js      # Subject management
+│   │   └── subjects/
+│   │       ├── math/
+│   │       │   ├── MathModel.js       # Math-specific model
+│   │       │   ├── OperationManager.js # Math operations manager
+│   │       │   └── activities/
+│   │       │       ├── AdditionLevels.js
+│   │       │       ├── SubtractionLevels.js
+│   │       │       └── PlaceValueActivity.js
+│   │       └── bulgarian/
+│   │           ├── BulgarianLanguageModel.js
+│   │           ├── BulgarianActivityManager.js
+│   │           └── activities/
+│   │               ├── LettersActivity.js
+│   │               ├── SyllablesActivity.js
+│   │               └── WordsActivity.js
 │   ├── views/
-│   │   └── MathView.js          # UI rendering and DOM manipulation
+│   │   └── AppView.js           # UI rendering and DOM manipulation
 │   ├── controllers/
-│   │   └── MathController.js    # Coordinates Model and View
+│   │   └── AppController.js     # Coordinates Model and View
 │   └── app.js                   # Application entry point
 ├── docs/
 │   └── MVC-ARCHITECTURE.md      # This documentation
@@ -44,7 +59,7 @@ math/
 - `updateScore()` - Updates game statistics
 - `getGameState()` - Returns current state
 
-### View (`js/views/MathView.js`)
+### View (`js/views/AppView.js`)
 **Responsibility**: UI rendering and DOM manipulation
 - Manages screen transitions
 - Displays problems and feedback
@@ -58,7 +73,7 @@ math/
 - `updateGameStatus(gameState)` - Updates UI elements
 - `showMessage(message)` - Displays feedback
 
-### Controller (`js/controllers/MathController.js`)
+### Controller (`js/controllers/AppController.js`)
 **Responsibility**: Coordinates Model and View
 - Handles user interactions
 - Manages application flow

@@ -4,18 +4,18 @@ const path = require('path');
 
 // List of files to load (relative to project root)
 const files = [
-    'js/models/LocalizationModel.js',
-    'js/models/extensions/AdditionLevels.js',
-    'js/models/extensions/SubtractionLevels.js',
-    'js/models/extensions/PlaceValueActivity.js',
-    'js/models/OperationManager.js',
-    'js/models/MathModel.js',
-    'js/models/extensions/LettersActivity.js',
-    'js/models/extensions/SyllablesActivity.js',
-    'js/models/extensions/WordsActivity.js',
-    'js/models/BulgarianActivityManager.js',
-    'js/models/BulgarianLanguageModel.js',
-    'js/models/SubjectManager.js'
+    'js/models/core/LocalizationModel.js',
+    'js/models/subjects/math/activities/AdditionLevels.js',
+    'js/models/subjects/math/activities/SubtractionLevels.js',
+    'js/models/subjects/math/activities/PlaceValueActivity.js',
+    'js/models/subjects/math/OperationManager.js',
+    'js/models/subjects/math/MathModel.js',
+    'js/models/subjects/bulgarian/activities/LettersActivity.js',
+    'js/models/subjects/bulgarian/activities/SyllablesActivity.js',
+    'js/models/subjects/bulgarian/activities/WordsActivity.js',
+    'js/models/subjects/bulgarian/BulgarianActivityManager.js',
+    'js/models/subjects/bulgarian/BulgarianLanguageModel.js',
+    'js/models/core/SubjectManager.js'
 ];
 
 // Load each file and make classes available globally

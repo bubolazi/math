@@ -1,5 +1,5 @@
 // View: UI rendering and DOM manipulation
-class MathView {
+class AppView {
     constructor(localization) {
         this.localization = localization;
         this.elements = {

@@ -21,7 +21,7 @@ class MathApp {
         const subjectManager = new SubjectManager();
         
         // Initialize controller with subject selection
-        const controller = new MathController(localization, subjectManager);
+        const controller = new AppController(localization, subjectManager);
         
         // Store references for potential future use
         this.localization = localization;
