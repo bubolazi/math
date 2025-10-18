@@ -146,24 +146,25 @@ describe('Navigation - Single-Level Activities', () => {
         controller = new MockController();
     });
 
-    test('Place Value (single level) skips level selection', () => {
+    test('Place Value (multi-level) shows level selection', () => {
         controller.selectSubject('math');
         controller.selectOperation('place_value');
         
-        // Should go directly to game, skipping level_select
-        expect(controller.navigationStack).toEqual(['subject', 'activity', 'game']);
-        expect(controller.currentLevel).toBe(1);
+        // Should show level selection (Place Value has 2 levels)
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
+        expect(controller.currentLevel).toBeNull(); // No level selected yet
     });
 
-    test('Navigate back from single-level game goes to activity selection', () => {
+    test('Navigate back from multi-level activity after selecting level', () => {
         controller.selectSubject('math');
         controller.selectOperation('place_value');
+        controller.startLevel(1, 'place_value');
         
         const previousState = controller.navigateBack();
         
-        // Should go back to activity selection, not level selection
-        expect(previousState).toBe('activity');
-        expect(controller.navigationStack).toEqual(['subject', 'activity']);
+        // Should go back to level selection
+        expect(previousState).toBe('level_select');
+        expect(controller.navigationStack).toEqual(['subject', 'activity', 'level_select']);
     });
 });
 
@@ -254,7 +255,7 @@ describe('Navigation - State Preservation After Back Navigation', () => {
         
         // Verify model can generate problems
         const problem = controller.model.generateProblem();
-        expect(problem).toHaveProperty('text');
+        expect(problem).toHaveProperty('display'); // Bulgarian uses 'display' property
     });
 
     test('Model generates correct results after back navigation', () => {

@@ -25,14 +25,14 @@ describe('Bulgarian Language - Letters Activity', () => {
             const problem = model.generateProblem();
             
             // Verify problem has required properties
-            expect(problem).toHaveProperty('text');
+            expect(problem).toHaveProperty('display');
             expect(problem).toHaveProperty('operation');
             
             // Verify operation type
-            expect(problem.operation).toBe('letters');
+            expect(problem.operation).toBe('read');
             
             // Verify the generated letter is a valid vowel
-            expect(vowels).toContain(problem.text);
+            expect(vowels).toContain(problem.display);
         }
     });
 
@@ -45,7 +45,7 @@ describe('Bulgarian Language - Letters Activity', () => {
             const problem = model.generateProblem();
             
             // Verify the generated letter is a valid consonant
-            expect(consonants).toContain(problem.text);
+            expect(consonants).toContain(problem.display);
         }
     });
 
@@ -58,7 +58,7 @@ describe('Bulgarian Language - Letters Activity', () => {
             const problem = model.generateProblem();
             
             // Verify the generated letter is valid
-            expect(allLetters).toContain(problem.text);
+            expect(allLetters).toContain(problem.display);
         }
     });
 });
@@ -83,15 +83,15 @@ describe('Bulgarian Language - Syllables Activity', () => {
             const problem = model.generateProblem();
             
             // Verify problem has required properties
-            expect(problem).toHaveProperty('text');
+            expect(problem).toHaveProperty('display');
             expect(problem).toHaveProperty('operation');
             
             // Verify operation type
-            expect(problem.operation).toBe('syllables');
+            expect(problem.operation).toBe('read');
             
             // Verify syllable is not empty and has reasonable length
-            expect(problem.text.length).toBeGreaterThan(0);
-            expect(problem.text.length).toBeLessThanOrEqual(4);
+            expect(problem.display.length).toBeGreaterThan(0);
+            expect(problem.display.length).toBeLessThanOrEqual(4);
         }
     });
 
@@ -102,8 +102,8 @@ describe('Bulgarian Language - Syllables Activity', () => {
             const problem = model.generateProblem();
             
             // Verify syllable is valid
-            expect(problem.text.length).toBeGreaterThan(0);
-            expect(problem.operation).toBe('syllables');
+            expect(problem.display.length).toBeGreaterThan(0);
+            expect(problem.operation).toBe('read');
         }
     });
 
@@ -114,8 +114,8 @@ describe('Bulgarian Language - Syllables Activity', () => {
             const problem = model.generateProblem();
             
             // Verify syllable is valid
-            expect(problem.text.length).toBeGreaterThan(0);
-            expect(problem.operation).toBe('syllables');
+            expect(problem.display.length).toBeGreaterThan(0);
+            expect(problem.operation).toBe('read');
         }
     });
 });
@@ -140,14 +140,14 @@ describe('Bulgarian Language - Words Activity', () => {
             const problem = model.generateProblem();
             
             // Verify problem has required properties
-            expect(problem).toHaveProperty('text');
+            expect(problem).toHaveProperty('display');
             expect(problem).toHaveProperty('operation');
             
             // Verify operation type
-            expect(problem.operation).toBe('words');
+            expect(problem.operation).toBe('read');
             
             // Verify word is not empty and has reasonable length
-            expect(problem.text.length).toBeGreaterThan(0);
+            expect(problem.display.length).toBeGreaterThan(0);
         }
     });
 
@@ -158,8 +158,8 @@ describe('Bulgarian Language - Words Activity', () => {
             const problem = model.generateProblem();
             
             // Verify word is valid
-            expect(problem.text.length).toBeGreaterThan(0);
-            expect(problem.operation).toBe('words');
+            expect(problem.display.length).toBeGreaterThan(0);
+            expect(problem.operation).toBe('read');
         }
     });
 
@@ -170,8 +170,8 @@ describe('Bulgarian Language - Words Activity', () => {
             const problem = model.generateProblem();
             
             // Verify word is valid
-            expect(problem.text.length).toBeGreaterThan(0);
-            expect(problem.operation).toBe('words');
+            expect(problem.display.length).toBeGreaterThan(0);
+            expect(problem.operation).toBe('read');
         }
     });
 });
@@ -238,6 +238,6 @@ describe('Bulgarian Language Model - Answer Validation', () => {
         model.updateScore();
         const badge = model.checkBadge();
         expect(badge).not.toBeNull();
-        expect(badge).toContain('като');
+        expect(badge).toContain('Печелиш значка:'); // Bulgarian for "You earned a badge:"
     });
 });

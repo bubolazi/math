@@ -30,7 +30,7 @@ describe('Math Operations - Addition', () => {
             expect(problem).toHaveProperty('operation');
             
             // Verify operation type
-            expect(problem.operation).toBe('addition');
+            expect(problem.operation).toBe('+');
             
             // Verify answer is correct
             const expectedAnswer = problem.num1 + problem.num2;
@@ -114,7 +114,7 @@ describe('Math Operations - Subtraction', () => {
             expect(problem.answer).toBe(expectedAnswer);
             
             // Verify operation type
-            expect(problem.operation).toBe('subtraction');
+            expect(problem.operation).toBe('-');
             
             // Verify answer is not negative (constraint for subtraction)
             expect(problem.answer).toBeGreaterThanOrEqual(0);
@@ -165,16 +165,19 @@ describe('Math Operations - Place Value', () => {
             expect(problem).toHaveProperty('operation');
             
             // Verify operation type
-            expect(problem.operation).toBe('place_value');
+            expect(problem.operation).toBe('place_value_recognition');
             
             // Verify answer is correct for place value decomposition
-            // For place value, answer should be tens or ones digit
+            // For level 1, it asks for ones or tens digit
             const expectedOnes = problem.num1 % 10;
             const expectedTens = Math.floor(problem.num1 / 10);
             
-            // Answer should be either ones or tens (depends on the question)
-            const isValidAnswer = problem.answer === expectedOnes || problem.answer === expectedTens;
-            expect(isValidAnswer).toBe(true);
+            // Answer should be either ones or tens depending on question type
+            if (problem.questionType === 'ones') {
+                expect(problem.answer).toBe(expectedOnes);
+            } else {
+                expect(problem.answer).toBe(expectedTens);
+            }
         }
     });
 });
@@ -228,6 +231,6 @@ describe('Math Model - State Management', () => {
         mathModel.updateScore();
         const badge = mathModel.checkBadge();
         expect(badge).not.toBeNull();
-        expect(badge).toContain('като');
+        expect(badge).toContain('Печелиш значка:'); // Bulgarian for "You earned a badge:"
     });
 });
