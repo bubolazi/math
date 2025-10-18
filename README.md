@@ -18,6 +18,17 @@ A beautiful, kid-friendly web application for preschool children to learn and pr
 - **Level 4**: Up to 50
 - **Level 5**: Up to 100
 
+**Place Value (Ones & Tens):**
+- **Level 1**: Recognition of ones and tens digits
+- **Level 2**: Step-by-step calculation with visual history
+
+### 🧮 Multi-Step Calculation Process
+- **Visual Calculation History**: All completed steps remain visible on screen
+- **Step-by-Step Guidance**: Clear progression through complex calculations
+- **Number-Focused Design**: Digits and numbers are the main visual accent
+- **Compact Information**: Concise labels with tooltips for detailed explanations
+- **Progressive Indicators**: Emoji-based step markers (📝 1️⃣ 2️⃣ 3️⃣ 4️⃣) for easy tracking
+
 ### 🎉 Reward System
 - Animated reward messages for correct answers
 - Automatic progression to next problems
@@ -82,6 +93,8 @@ lumi/
 - **Modular Code**: Easy to maintain and extend
 - **Automated Testing**: Comprehensive test suite with Jest
 - **CI/CD**: Automated testing on every commit
+- **Multi-Step UI**: Dynamic history display for complex calculations
+- **Adaptive Layout**: Switches between standard and multi-step views automatically
 
 ## Testing
 
