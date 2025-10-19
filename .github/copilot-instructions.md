@@ -298,7 +298,7 @@ python3 -m http.server # Run local server
 4. ❌ Don't bypass testing requirements
 5. ❌ Don't use deprecated JavaScript features
 6. ❌ Don't ignore linting or test failures
-7. ❌ Don't commit IDE-specific config files or temporary files
+7. ❌ Don't hardcode configuration values that should be environment-specific
 
 ## Questions?
 
