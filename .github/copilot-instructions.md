@@ -292,16 +292,13 @@ python3 -m http.server # Run local server
 
 ## What NOT to Do
 
-1. ❌ Don't add runtime dependencies (keep app pure JavaScript)
-2. ❌ Don't remove or modify working tests
-3. ❌ Don't commit sensitive data (secrets, tokens, passwords)
-4. ❌ Don't modify files outside the project scope
-5. ❌ Don't break existing functionality without good reason
-6. ❌ Don't add comments unless absolutely necessary
-7. ❌ Don't bypass testing requirements
-8. ❌ Don't use deprecated JavaScript features
-9. ❌ Don't ignore linting or test failures
-10. ❌ Don't commit build artifacts or node_modules
+1. ❌ Don't remove or modify working tests
+2. ❌ Don't modify files outside the project scope
+3. ❌ Don't break existing functionality without good reason
+4. ❌ Don't bypass testing requirements
+5. ❌ Don't use deprecated JavaScript features
+6. ❌ Don't ignore linting or test failures
+7. ❌ Don't commit IDE-specific config files or temporary files
 
 ## Questions?
 
