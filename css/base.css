@@ -94,11 +94,61 @@ main {
     text-align: center;
 }
 
+/* Multi-step calculation display */
+.calculation-container {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.calculation-history {
+    flex: 1;
+    text-align: left;
+    font-family: monospace;
+    font-size: 1.2rem;
+    line-height: 1.8;
+    max-width: 500px;
+}
+
+.history-step {
+    padding: 4px 0;
+    opacity: 0.7;
+}
+
+.history-step.completed {
+    opacity: 1;
+}
+
+.history-step .step-number {
+    display: inline-block;
+    width: 30px;
+}
+
+.history-step .step-content {
+    display: inline-block;
+}
+
+.current-step-display {
+    flex: 1;
+    text-align: center;
+    max-width: 500px;
+}
+
 .problem-display {
     font-size: 3rem;
     margin-bottom: 40px;
     font-family: monospace;
     letter-spacing: 8px;
+}
+
+.problem-display.compact {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    letter-spacing: 4px;
+    line-height: 1.4;
 }
 
 .input-line {
@@ -182,9 +232,23 @@ main {
 
 /* Responsive structure */
 @media (max-width: 600px) {
+    .calculation-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .calculation-history {
+        font-size: 1rem;
+    }
+    
     .problem-display {
         font-size: 2rem;
         letter-spacing: 4px;
+    }
+    
+    .problem-display.compact {
+        font-size: 1.5rem;
+        letter-spacing: 2px;
     }
     
     #terminal-input {

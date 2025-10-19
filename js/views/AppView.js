@@ -9,6 +9,10 @@ class AppView {
             gameScreen: document.getElementById('game-screen'),
             breadcrumbNav: document.getElementById('breadcrumb-nav'),
             problemDisplay: document.getElementById('problem-display'),
+            problemDisplayCompact: document.getElementById('problem-display-compact'),
+            calculationContainer: document.getElementById('calculation-container'),
+            calculationHistory: document.getElementById('calculation-history'),
+            standardDisplay: document.getElementById('standard-display'),
             terminalInput: document.getElementById('terminal-input'),
             scoreDisplay: document.getElementById('score-display'),
             problemsDisplay: document.getElementById('problems-display'),
@@ -90,52 +94,103 @@ class AppView {
     displayProblem(problem) {
         if (problem.operation === 'read') {
             // Bulgarian Language activity - just show the letter/syllable/word
+            this.showStandardDisplay();
             this.elements.problemDisplay.textContent = problem.display;
         } else if (problem.operation === 'place_value_recognition') {
             // Place Value Level 1 - Recognize ones or tens
+            this.showStandardDisplay();
             const questionText = problem.questionType === 'ones' 
                 ? this.localization.t('WHICH_DIGIT_ONES')
                 : this.localization.t('WHICH_DIGIT_TENS');
             this.elements.problemDisplay.textContent = `${problem.display}\n${questionText}`;
         } else if (problem.operation === 'place_value_calculation') {
-            // Place Value Level 2 - Step-by-step calculation
+            // Place Value Level 2 - Step-by-step calculation with history
             this.displayPlaceValueStep(problem);
         } else {
             // Standard math problem
+            this.showStandardDisplay();
             this.elements.problemDisplay.textContent = 
                 `${problem.num1} ${problem.operation} ${problem.num2} = ?`;
         }
     }
     
+    // Show standard single-column display
+    showStandardDisplay() {
+        this.elements.standardDisplay.style.display = 'flex';
+        this.elements.standardDisplay.style.flexDirection = 'column';
+        this.elements.standardDisplay.style.alignItems = 'center';
+        this.elements.calculationContainer.style.display = 'none';
+    }
+    
+    // Show multi-step calculation display
+    showMultiStepDisplay() {
+        this.elements.standardDisplay.style.display = 'none';
+        this.elements.calculationContainer.style.display = 'flex';
+    }
+    
     // Display Place Value step-by-step calculation
     displayPlaceValueStep(problem) {
+        this.showMultiStepDisplay();
+        
         const step = problem.currentStep || 1;
-        let displayText = '';
+        
+        // Build calculation history
+        let historyHTML = '';
+        historyHTML += `<div class="history-step completed"><span class="step-number">📝</span><span class="step-content">${problem.num1} + ${problem.num2} = ?</span></div>`;
+        
+        // Step 1: Add the ones
+        if (step >= 1) {
+            const status = step > 1 ? 'completed' : '';
+            const answer = step > 1 ? ` = ${problem.onesSum}` : ' = ?';
+            historyHTML += `<div class="history-step ${status}"><span class="step-number">1️⃣</span><span class="step-content">${problem.ones1} + ${problem.ones2}${answer}</span></div>`;
+        }
+        
+        // Step 2: Identify carry
+        if (step >= 2) {
+            const status = step > 2 ? 'completed' : '';
+            const answer = step > 2 ? ` = ${problem.carryOver}` : ' = ?';
+            const tooltip = problem.carryOver > 0 ? ' ℹ' : '';
+            historyHTML += `<div class="history-step ${status}"><span class="step-number">2️⃣</span><span class="step-content">Пренос${answer}${tooltip}</span></div>`;
+        }
+        
+        // Step 3: Add the tens
+        if (step >= 3) {
+            const status = step > 3 ? 'completed' : '';
+            const answer = step > 3 ? ` = ${problem.tensFinal}` : ' = ?';
+            const carryText = problem.carryOver > 0 ? ` + ${problem.carryOver}` : '';
+            historyHTML += `<div class="history-step ${status}"><span class="step-number">3️⃣</span><span class="step-content">${problem.tens1} + ${problem.tens2}${carryText}${answer}</span></div>`;
+        }
+        
+        // Step 4: Combine
+        if (step >= 4) {
+            const status = step > 4 ? 'completed' : '';
+            const answer = step > 4 ? ` = ${problem.answer}` : ' = ?';
+            historyHTML += `<div class="history-step ${status}"><span class="step-number">4️⃣</span><span class="step-content">${problem.tensFinal}0 + ${problem.onesFinal}${answer}</span></div>`;
+        }
+        
+        this.elements.calculationHistory.innerHTML = historyHTML;
+        
+        // Display current step question
+        let currentStepText = '';
         let hasInfoIcon = false;
         
         if (step === 1) {
-            // Step 1: Add the ones
-            displayText = `${this.localization.t('ONES_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.ones1} + ${problem.ones2} = ?`;
+            currentStepText = `${problem.ones1} + ${problem.ones2} = ?`;
         } else if (step === 2) {
-            // Step 2: Identify the carry value
-            hasInfoIcon = problem.carryOver > 0; // Only show info icon if there's a carry
+            hasInfoIcon = problem.carryOver > 0;
             const infoIcon = hasInfoIcon ? ` ${this.localization.t('TOOLTIP_ICON')}` : '';
-            displayText = `${this.localization.t('CARRY_STEP')}${infoIcon}\n${problem.num1} + ${problem.num2}\nЕдиници дадоха: ${problem.onesSum}\nПренос = ?`;
+            currentStepText = `Пренос = ?${infoIcon}`;
         } else if (step === 3) {
-            // Step 3: Add the tens (including carry if any)
-            const tensDisplay = problem.carryOver > 0 
-                ? `Десетици: ${problem.tens1} + ${problem.tens2} + ${problem.carryOver} (пренос) = ?`
-                : `Десетици: ${problem.tens1} + ${problem.tens2} = ?`;
-            displayText = `${this.localization.t('TENS_STEP')}\n${problem.num1} + ${problem.num2}\n${tensDisplay}`;
+            const carryText = problem.carryOver > 0 ? ` + ${problem.carryOver}` : '';
+            currentStepText = `${problem.tens1} + ${problem.tens2}${carryText} = ?`;
         } else if (step === 4) {
-            // Step 4: Combine the results
-            displayText = `${this.localization.t('COMBINE_STEP')}\n${problem.num1} + ${problem.num2}\nЕдиници: ${problem.onesFinal}, Десетици: ${problem.tensFinal}\nРезултат = ?`;
+            currentStepText = `${problem.tensFinal}0 + ${problem.onesFinal} = ?`;
         }
         
         // Update problem's hasInfoIcon flag
         problem.hasInfoIcon = hasInfoIcon;
         
-        this.elements.problemDisplay.textContent = displayText;
+        this.elements.problemDisplayCompact.textContent = currentStepText;
         
         // Update help text if info icon is present
         if (hasInfoIcon) {
