@@ -42,11 +42,31 @@ The application follows a **Model-View-Controller (MVC)** architecture:
 - **No Comments**: Code should be self-documenting; avoid comments unless absolutely necessary for complex logic
 - **Semantic Naming**: Use clear, descriptive names for variables, functions, and classes
 
+### Security Guidelines
+- **No Secrets**: Never commit API keys, tokens, passwords, or other sensitive data
+- **Input Validation**: Always validate user input before processing
+- **XSS Prevention**: Sanitize user-generated content before rendering
+- **Dependencies**: Only add dependencies when absolutely necessary; review security advisories
+- **Code Review**: All changes should be reviewed for security vulnerabilities
+
+### Dependencies Policy
+- **Runtime Dependencies**: Avoid adding new runtime dependencies; keep the app pure JavaScript
+- **Dev Dependencies**: Only add devDependencies for testing, linting, or build tools
+- **Version Pinning**: Use exact versions in package.json for reproducible builds
+- **Security Audits**: Run `npm audit` regularly to check for vulnerabilities
+- **Updates**: Keep dependencies up to date, especially security patches
+
 ### File Organization
 - One class per file
 - File names match class names (e.g., `MathModel.js` for `MathModel` class)
 - Group related files in appropriate subdirectories
 - Keep HTML, CSS, and JS separate
+
+### File Restrictions
+- **DO NOT modify**: `package-lock.json` (only update via `npm install`)
+- **DO NOT commit**: `node_modules/`, `coverage/`, `.DS_Store`, IDE config files
+- **DO NOT access**: Files outside the project directory
+- **Review `.gitignore`**: Before committing to ensure no unwanted files are included
 
 ### Class Structure
 ```javascript
@@ -270,9 +290,51 @@ python3 -m http.server # Run local server
 9. ✅ Support progressive difficulty levels
 10. ✅ Ensure responsive design
 
+## What NOT to Do
+
+1. ❌ Don't add runtime dependencies (keep app pure JavaScript)
+2. ❌ Don't remove or modify working tests
+3. ❌ Don't commit sensitive data (secrets, tokens, passwords)
+4. ❌ Don't modify files outside the project scope
+5. ❌ Don't break existing functionality without good reason
+6. ❌ Don't add comments unless absolutely necessary
+7. ❌ Don't bypass testing requirements
+8. ❌ Don't use deprecated JavaScript features
+9. ❌ Don't ignore linting or test failures
+10. ❌ Don't commit build artifacts or node_modules
+
 ## Questions?
 
 For additional guidance, refer to:
 - Main README: `/README.md`
 - Test documentation: `/tests/README.md`
 - Example implementations in `js/models/subjects/`
+
+## Working with Copilot
+
+### How to Get the Best Results
+
+1. **Be Specific**: Clearly describe what you want to achieve
+2. **Provide Context**: Reference existing files and patterns when relevant
+3. **Ask for Tests**: Request test coverage for new features
+4. **Request Reviews**: Ask Copilot to review changes before finalizing
+5. **Iterate**: Start small, test frequently, and build incrementally
+
+### Example Requests
+
+**Good Examples:**
+- "Add a new multiplication activity to MathModel following the addition pattern"
+- "Create tests for the new multiplication activity covering levels 1-3"
+- "Fix the navigation bug where back button doesn't preserve state"
+
+**Avoid:**
+- "Make the app better" (too vague)
+- "Add all missing features" (too broad)
+- "Fix everything" (unclear scope)
+
+### When to Ask for Help
+
+- **Complex Architecture Changes**: Discuss major refactoring before implementing
+- **New Dependencies**: Justify why a new dependency is necessary
+- **Breaking Changes**: Explain impact on existing functionality
+- **Performance Issues**: Provide specific scenarios and measurements
