@@ -57,7 +57,7 @@ class AppController {
         this.currentSubject = subjectName;
         this.currentActivity = null;
         this.currentLevel = null;
-        this.navigationStack = ['subject'];
+        this.navigationStack = [];
         
         // Pass current subject to view
         this.view.currentSubject = subjectName;
@@ -78,6 +78,9 @@ class AppController {
     }
     
     initializeOperationSelection() {
+        // Push 'subject' to navigation stack when showing operations
+        this.pushToStackIfNotPresent('subject');
+        
         // Show operation selection screen
         this.view.showScreen('operation-select');
         
@@ -434,7 +437,7 @@ class AppController {
                     this.view.clearAndFocusInput();
                 }, 1500);
             } else {
-                // Final step completed - award points and generate new problem
+                // Final step completed - award points and show message
                 this.model.updateScore();
                 
                 const badgeMessage = this.model.checkBadge();
@@ -445,6 +448,9 @@ class AppController {
                 }
                 
                 this.view.updateGameStatus(this.model.getGameState());
+                
+                // Mark that we've completed all steps so next Enter generates new problem
+                problem.currentStep = 5;
             }
         } else {
             // Incorrect answer
