@@ -662,6 +662,48 @@ main {
     opacity: 0.85;
 }
 
+/* Username screen structure */
+#username-screen {
+    font-family: monospace;
+}
+
+#username-screen h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.username-form {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.username-input {
+    padding: 8px 12px;
+    font-family: monospace;
+    font-size: 1.2rem;
+    border: 2px solid;
+    background: transparent;
+    outline: none;
+    width: 240px;
+    text-transform: uppercase;
+}
+
+.username-button {
+    padding: 8px 16px;
+    cursor: pointer;
+    border: 2px solid;
+    background: transparent;
+    font-family: monospace;
+    font-size: 1rem;
+    text-transform: uppercase;
+    transition: background-color 0.2s;
+}
+
 /* Responsive structure */
 @media (max-width: 600px) {
     .calculation-container {

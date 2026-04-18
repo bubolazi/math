@@ -1,11 +1,9 @@
 // Controller: Coordinates between Model and View
 class AppController {
-    constructor(localization, subjectManager, userStorage, auth0Service, apiService) {
+    constructor(localization, subjectManager, userStorage) {
         this.localization = localization;
         this.subjectManager = subjectManager;
         this.userStorage = userStorage;
-        this.auth0Service = auth0Service;
-        this.apiService = apiService;
         this.activityManager = null;
         this.view = new AppView(localization);
         this.model = null;
@@ -38,9 +36,7 @@ class AppController {
         this.view.updateLocaleSwitcher(lang);
         this.view.applyStaticText();
         this.view.renderSubjectList(this.subjectManager.getAvailableSubjects(), this.localization);
-        if (this.userStorage.isAuthenticated() && this.apiService) {
-            this.apiService.setUserLocale(lang);
-        }
+
     }
 
     // Bind global keyboard handler for navigation
@@ -167,7 +163,11 @@ class AppController {
         const currentUser = this.userStorage.getCurrentUser();
 
         if (!currentUser) {
-            this.auth0Service.initiateLogin('/', this.localization.getCurrentLanguage());
+            this.view.showUsernameScreen(this.localization, (username) => {
+                this.userStorage.setLocalUser(username);
+                this.updateUserDisplay();
+                this.proceedWithSubjectSelection(subjectName);
+            });
         } else {
             this.proceedWithSubjectSelection(subjectName);
         }
@@ -771,15 +771,10 @@ class AppController {
         this.view.updateUserDisplay(currentUser);
     }
 
-    async handleLogout() {
-        const response = await this.userStorage.logout();
+    handleLogout() {
+        this.userStorage.logout();
         this.updateUserDisplay();
         this.initializeSubjectSelection();
-
-        // Redirect to Auth0 logout to clear the SSO session
-        if (response && response.logoutUrl) {
-            window.location.href = response.logoutUrl;
-        }
     }
 
     async handleStarKey() {

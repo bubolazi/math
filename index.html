@@ -9,7 +9,7 @@
                    script-src 'self' 'unsafe-inline';
                    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
                    img-src 'self' data: https:;
-                   connect-src 'self' http://localhost:3000 https://*.bubolazi.com https://api.bubolazi.com;
+                   connect-src 'self';
                    font-src 'self' data: https://fonts.gstatic.com https://fonts.googleapis.com;
                    object-src 'none';">
     <!-- Favicon -->
@@ -56,7 +56,16 @@
         </header>
 
         <main>
-            <div id="subject-select" class="screen active">
+            <div id="username-screen" class="screen">
+                <h2 id="username-title">ВЪВЕДЕТЕ ИМЕ:</h2>
+                <div class="username-form">
+                    <input type="text" id="username-input" class="username-input" maxlength="20" autocomplete="off">
+                    <button id="username-submit" class="username-button">ВЛЕЗ</button>
+                </div>
+                <div class="instructions">ВЪВЕДЕТЕ ИМЕ И НАТИСНЕТЕ ENTER</div>
+            </div>
+
+            <div id="subject-select" class="screen">
                 <h2>ИЗБЕРЕТЕ ПРЕДМЕТ:</h2>
                 <ul class="subject-list">
                     <!-- Subjects will be dynamically populated by the View -->

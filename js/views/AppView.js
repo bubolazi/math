@@ -23,6 +23,9 @@ class AppView {
             userInfo: document.getElementById('user-info'),
             userDisplay: document.getElementById('user-display'),
             logoutButton: document.getElementById('logout-button'),
+            usernameScreen: document.getElementById('username-screen'),
+            usernameInput: document.getElementById('username-input'),
+            usernameSubmit: document.getElementById('username-submit'),
             feedbackModal: document.getElementById('feedback-modal'),
             feedbackHeader: document.getElementById('feedback-header'),
             feedbackEmoji: document.getElementById('feedback-emoji'),
@@ -646,6 +649,35 @@ class AppView {
 
     bindLogoutButton(handler) {
         this.elements.logoutButton.addEventListener('click', handler);
+    }
+
+    showUsernameScreen(localization, onSubmit) {
+        this.showScreen('username-screen');
+
+        const input = this.elements.usernameInput;
+        const button = this.elements.usernameSubmit;
+
+        if (!input || !button) return;
+
+        input.value = '';
+        input.placeholder = localization.t('USER_PROMPT');
+        button.textContent = localization.t('LOGIN');
+        input.focus();
+
+        const submit = () => {
+            const username = input.value.trim();
+            if (!username) return;
+            button.removeEventListener('click', submit);
+            input.removeEventListener('keydown', keyHandler);
+            onSubmit(username);
+        };
+
+        const keyHandler = (e) => {
+            if (e.key === 'Enter') submit();
+        };
+
+        button.addEventListener('click', submit);
+        input.addEventListener('keydown', keyHandler);
     }
 
     showBadgesMessage(badges, currentPage, totalPages, badgeCount) {

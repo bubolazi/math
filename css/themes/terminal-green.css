@@ -160,6 +160,26 @@ header h1,
     background-color: var(--dark-green);
 }
 
+/* Username screen colors */
+.username-input {
+    color: var(--terminal-green);
+    border-color: var(--terminal-green);
+    caret-color: var(--terminal-green);
+}
+
+.username-input:focus {
+    background-color: var(--dark-green);
+}
+
+.username-button {
+    color: var(--terminal-green);
+    border-color: var(--terminal-green);
+}
+
+.username-button:hover {
+    background-color: var(--dark-green);
+}
+
 /* Login modal colors */
 .login-modal {
     background-color: rgba(0, 0, 0, 0.8);

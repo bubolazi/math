@@ -306,6 +306,7 @@ class LocalizationModel {
 
                 'USER_PROMPT': 'Въведи твоето име:',
                 'USER_LOGGED_IN': 'Потребител:',
+                'LOGIN': 'ВЛЕЗ',
                 'LOGOUT': 'ИЗХОД',
                 'BADGES_TITLE': 'ЗНАЧКИ',
                 'BADGES_COUNT': 'Брой значки:',
@@ -620,6 +621,7 @@ class LocalizationModel {
 
                 'USER_PROMPT': 'Enter your name:',
                 'USER_LOGGED_IN': 'User:',
+                'LOGIN': 'ENTER',
                 'LOGOUT': 'LOGOUT',
                 'BADGES_TITLE': 'BADGES',
                 'BADGES_COUNT': 'Badge count:',
