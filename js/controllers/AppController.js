@@ -158,33 +158,13 @@ class AppController {
 
         if (!currentUser) {
             this.view.promptUserLogin(async (authData) => {
-                if (authData.type === 'local') {
-                    // Local user (legacy)
-                    if (this.userStorage.setLocalUser(authData.username)) {
-                        this.updateUserDisplay();
-                        this.proceedWithSubjectSelection(subjectName);
-                    }
+                if (authData && authData.type === 'local' && this.userStorage.setLocalUser(authData.username)) {
+                    this.updateUserDisplay();
+                    this.proceedWithSubjectSelection(subjectName);
                     return { success: true };
                 }
-                else if (authData.type === 'login') {
-                    // API Login
-                    const result = await this.userStorage.login(authData.email, authData.password, authData.captchaToken);
-                    if (result.success) {
-                        this.updateUserDisplay();
-                        this.proceedWithSubjectSelection(subjectName);
-                    }
-                    return result;
-                }
-                else if (authData.type === 'register') {
-                    // API Register
-                    const result = await this.userStorage.register(authData.email, authData.password, authData.name, authData.captchaToken);
-                    if (result.success && result.session) {
-                        // Auto-login if session returned
-                        this.updateUserDisplay();
-                        this.proceedWithSubjectSelection(subjectName);
-                    }
-                    return result;
-                }
+
+                return { success: false };
             });
         } else {
             this.proceedWithSubjectSelection(subjectName);

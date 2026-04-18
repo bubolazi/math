@@ -654,42 +654,17 @@ class AppView {
     promptUserLogin(callback) {
         this.elements.loginModal.style.display = 'flex';
 
-        // Elements
         const authLabel = document.getElementById('auth-label');
         const authInput = document.getElementById('auth-input');
         const authMessage = document.getElementById('auth-message');
-        const turnstileContainer = document.getElementById('turnstile-container');
 
-        // State
-        let step = 'username'; // username, password, register_name, email_confirm
-        let email = '';
-        let password = '';
-
-        // Reset UI
         authLabel.textContent = 'ПОТРЕБИТЕЛСКО ИМЕ:';
         authInput.value = '';
         authInput.type = 'text';
+        authInput.style.display = '';
         authMessage.textContent = '';
         authMessage.className = 'auth-message';
-        turnstileContainer.style.display = 'none';
 
-        // Initialize Turnstile widget with config sitekey
-        const turnstileWidget = document.getElementById('turnstile-widget');
-        if (turnstileWidget && window.LUMI_CONFIG && typeof turnstile !== 'undefined') {
-            // Check if already rendered to avoid duplicates
-            if (!turnstileWidget.hasChildNodes()) {
-                try {
-                    this.turnstileWidgetId = turnstile.render('#turnstile-widget', {
-                        sitekey: window.LUMI_CONFIG.TURNSTILE_SITE_KEY,
-                        theme: 'dark'
-                    });
-                } catch (e) {
-                    console.error('Turnstile render error:', e);
-                }
-            }
-        }
-
-        // Save keyboard handlers
         const savedHandlers = {
             subject: this._subjectKeyHandler,
             operation: this._operationKeyHandler,
@@ -723,100 +698,16 @@ class AppView {
             authMessage.className = isError ? 'auth-message error' : 'auth-message success';
         };
 
-        const handleEnter = async () => {
+        const handleEnter = () => {
             const value = authInput.value.trim();
-            showMessage(''); // Clear previous messages
+            showMessage('');
 
-            if (step === 'username') {
-                if (!value) return;
-
-                // Check if email
-                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-                const isEmail = emailRegex.test(value);
-
-                if (isEmail) {
-                    // It's an email - go to password
-                    email = value;
-                    step = 'password';
-                    authLabel.textContent = 'ПАРОЛА:';
-                    authInput.value = '';
-                    authInput.type = 'password';
-                    turnstileContainer.style.display = 'block'; // Show captcha for login
-                } else {
-                    // It's a local user - finish
-                    cleanup();
-                    callback({ type: 'local', username: value });
-                }
-            } else if (step === 'password') {
-                if (!value) return;
-                password = value;
-
-                // Get captcha
-                const captchaToken = turnstile.getResponse(this.turnstileWidgetId);
-                if (!captchaToken) {
-                    showMessage('Моля попълнете капча', true);
-                    return;
-                }
-
-                // Try login
-                showMessage('Влизане...', false);
-                const result = await callback({
-                    type: 'login',
-                    email,
-                    password,
-                    captchaToken
-                });
-
-                if (result.success) {
-                    cleanup();
-                } else if (result.userNotFound) {
-                    // User not found - go to registration
-                    step = 'register_name';
-                    authLabel.textContent = 'ПОКАЗВАНО ИМЕ:';
-                    authInput.value = '';
-                    authInput.type = 'text';
-                    showMessage('Потребителят не е намерен. Въведете име за регистрация.', false);
-                    turnstile.reset(this.turnstileWidgetId); // Reset captcha for registration
-                } else {
-                    // Wrong password or other error
-                    showMessage(result.error || 'Грешка при влизане', true);
-                    authInput.value = '';
-                    turnstile.reset(this.turnstileWidgetId);
-                }
-            } else if (step === 'register_name') {
-                if (!value) return;
-
-                const captchaToken = turnstile.getResponse(this.turnstileWidgetId);
-                if (!captchaToken) {
-                    showMessage('Моля попълнете капча', true);
-                    return;
-                }
-
-                showMessage('Регистрация...', false);
-                const result = await callback({
-                    type: 'register',
-                    email,
-                    password,
-                    name: value,
-                    captchaToken
-                });
-
-                if (result.success) {
-                    step = 'email_confirm';
-                    authLabel.textContent = 'РЕГИСТРАЦИЯТА Е УСПЕШНА';
-                    authInput.style.display = 'none';
-                    turnstileContainer.style.display = 'none';
-                    showMessage('Моля проверете имейла си за потвърждение.', false);
-                    // Change footer hint
-                    const footer = this.elements.loginModal.querySelector('.modal-footer');
-                    if (footer) footer.innerHTML = '<div class="key-hint"><span class="key">ENTER</span> ЗАТВОРИ</div>';
-                } else {
-                    showMessage(result.error || 'Грешка при регистрация', true);
-                    turnstile.reset(this.turnstileWidgetId);
-                }
-            } else if (step === 'email_confirm') {
-                cleanup();
+            if (!value) {
+                return;
             }
+
+            cleanup();
+            callback({ type: 'local', username: value });
         };
 
         authInput.onkeydown = (e) => {
