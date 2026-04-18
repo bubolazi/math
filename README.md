@@ -153,19 +153,7 @@ lumi/
 
 ## Database Integration
 
-The application currently uses localStorage for data persistence. For cross-device and cross-browser synchronization, we have prepared a comprehensive **Supabase integration guide**:
-
-- 📖 **[Full Integration Guide](docs/SUPABASE_INTEGRATION_GUIDE.md)** - Complete step-by-step implementation plan
-- 🚀 **[Quick Start Guide](docs/SUPABASE_QUICK_START.md)** - Get started in 30 minutes
-- 🗄️ **[Database Schema](docs/supabase-schema.sql)** - Ready-to-execute SQL script
-
-### Benefits of Supabase Integration
-
-- ✅ Cross-device synchronization
-- ✅ Cross-browser data persistence
-- ✅ Cloud backup and recovery
-- ✅ Future-ready for leaderboards and social features
-- ✅ Maintains backward compatibility with localStorage
+Lumi uses localStorage for data persistence and sessionStorage for the active username session. Users sign in with username only (no email required).
 
 ## Future Enhancements
 
