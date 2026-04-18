@@ -706,8 +706,29 @@ class AppView {
                 return;
             }
 
-            cleanup();
-            callback({ type: 'local', username: value });
+            authInput.value = '';
+
+            try {
+                const result = callback({ type: 'local', username: value });
+                if (result && typeof result.then === 'function') {
+                    result
+                        .then((response) => {
+                            if (!response || response.success !== false) {
+                                cleanup();
+                            } else {
+                                showMessage(response.error || 'Грешка при вход', true);
+                            }
+                        })
+                        .catch(() => {
+                            showMessage('Грешка при вход', true);
+                        });
+                    return;
+                }
+
+                cleanup();
+            } catch (e) {
+                showMessage('Грешка при вход', true);
+            }
         };
 
         authInput.onkeydown = (e) => {
